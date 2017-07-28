@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.admin.bookapp.data.BookListContract;
-import com.example.admin.bookapp.data.BookListDbHelper;
+import com.example.admin.bookapp.data.DatabaseAccess;
 
 /**
  * Created by Admin on 17.07.2017.
@@ -31,14 +31,17 @@ public class MyListActivity extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_my_list_view, mContentFrame);
         setTitle(R.string.my_books);
 
-        customBookName = (EditText) findViewById(R.id.et_custom_book_name);
-        customAuthorName = (EditText) findViewById(R.id.et_custom_author_name);
+//        customBookName = (EditText) findViewById(R.id.et_custom_book_name);
+//        customAuthorName = (EditText) findViewById(R.id.et_custom_author_name);
 
         RecyclerView mListRecyclerView = (RecyclerView) findViewById(R.id.rv_books_list);
         mListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        BookListDbHelper dbHelper =  new BookListDbHelper(this);
-        mDb = dbHelper.getReadableDatabase();
-        Cursor cursor = getBooksInMyList();
+//        CustomBookListDbHelper dbHelper =  new CustomBookListDbHelper(this);
+//        mDb = dbHelper.getReadableDatabase();
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        Cursor cursor = databaseAccess.getBooksInMyList();
+
 
         mAdapter = new BooksAdapter(this, cursor);
         mListRecyclerView.setAdapter(mAdapter);
@@ -47,7 +50,9 @@ public class MyListActivity extends BaseActivity {
     public void addToBookList(View view){
         if (customBookName.getText().length()==0 || customAuthorName.getText().length()==0)return;
         addNewBook(customBookName.getText().toString(), customAuthorName.getText().toString());
-        Cursor newCursor = getBooksInMyList();
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        Cursor newCursor = databaseAccess.getBooksInMyList();
         mAdapter.swapCursor(newCursor);
 
         customAuthorName.clearFocus();
@@ -80,14 +85,20 @@ public class MyListActivity extends BaseActivity {
 //                BookListContract.BookListItem.COLUMN_TIMESTAMP
 //        );
 //    }
-    public Cursor getBooksInMyList(){
-        return mDb.rawQuery("SELECT "+ BookListContract.BookListItem.COLUMN_BOOK_NAME+ ", "+ BookListContract.BookListItem.COLUMN_BOOK_AUTHOR+
-                " FROM "+ BookListContract.BookListItem.TABLE_NAME +
-                        " WHERE "+ BookListContract.BookListItem.COLUMN_IN_MY_LIST+ " = ?"+
-                        " UNION SELECT "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
-                        ", "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + BookListContract.CustomBookListItem.TABLE_NAME
-                        , new String[]{"Да"});
-    }
+//    public Cursor getBooksInMyList(){
+//
+////        return mDb.rawQuery("SELECT bookName, bookAuthor FROM "+ BookListDbHelper.TABLE_NAME+
+////                        " WHERE "+ BookListDbHelper.COLUMN_IN_MY_LIST+ " = 'Да'"+
+////                        " UNION SELECT "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
+////                        ", "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + BookListContract.CustomBookListItem.TABLE_NAME
+////                        , new String[]{"Да"});
+//
+//        return BookListDbHelper.TABLE_NAME.rawQuery("SELECT bookName, bookAuthor FROM "+ BookListDbHelper.TABLE_NAME+
+//                        " WHERE "+ BookListDbHelper.COLUMN_IN_MY_LIST+ " = 'Да'"+
+//                        " UNION SELECT "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
+//                        ", "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + BookListContract.CustomBookListItem.TABLE_NAME
+//                , new String[]{"Да"});
+//    }
 
     private long addNewBook(String bookName, String authorName){
         ContentValues cv = new ContentValues();
@@ -100,6 +111,13 @@ public class MyListActivity extends BaseActivity {
         return mDb.delete(BookListContract.CustomBookListItem.TABLE_NAME, BookListContract.CustomBookListItem._ID + " = " + id, null)>0;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

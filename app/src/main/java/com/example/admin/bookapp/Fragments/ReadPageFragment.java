@@ -12,7 +12,8 @@ import android.widget.TextView;
 
 import com.example.admin.bookapp.R;
 import com.example.admin.bookapp.ReadPagerActivity;
-import com.example.admin.bookapp.data.BookListContract;
+import com.example.admin.bookapp.data.BookListDbHelper;
+import com.example.admin.bookapp.data.DatabaseAccess;
 
 
 public class ReadPageFragment extends Fragment {
@@ -22,6 +23,7 @@ public class ReadPageFragment extends Fragment {
     private ScrollView mBookPageScrollView;
     private TextView mBookPageTextView;
     private Button mWhatBookButton;
+    private TextView mBookPageNumTextView;
 
     int mNum;
 
@@ -51,21 +53,21 @@ public class ReadPageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_read_pager, container, false);
 
-
+        mBookPageNumTextView = (TextView) view.findViewById(R.id.tv_book_page_num);
         mBookPageScrollView = (ScrollView) view.findViewById(R.id.sv_book_contents);
         mBookPageTextView =(TextView)  view.findViewById(R.id.tv_book_contents);
         mWhatBookButton = (Button) view.findViewById(R.id.btn_what_book);
 
-        Cursor cursor = ((ReadPagerActivity)getActivity()).cursorBookPage();
+        Cursor cursor = DatabaseAccess.getBookPage();
         cursor.moveToFirst();
 
-        final int bookId = cursor.getInt(cursor.getColumnIndex(BookListContract.BookListItem._ID));
-        final String bookAuthor = cursor.getString(cursor.getColumnIndex(BookListContract.BookListItem.COLUMN_BOOK_NAME));
-        final String bookName = cursor.getString(cursor.getColumnIndex(BookListContract.BookListItem.COLUMN_BOOK_AUTHOR));
-        String bookPage = cursor.getString(cursor.getColumnIndex(BookListContract.BookListItem.COLUMN_BOOK_PAGE));
-         ((ReadPagerActivity)getActivity()).updatePageShown(bookId);
+        final int bookId = cursor.getInt(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_ID));
+        final String bookAuthor = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_NAME));
+        final String bookName = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_AUTHOR));
+        String bookPage = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_PAGE));
+        DatabaseAccess.updatePageShown(bookId);
 
-
+        mBookPageNumTextView.setText("Отрывок №"+bookId);
         mBookPageTextView.setText(bookPage);
         mWhatBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,10 +82,10 @@ public class ReadPageFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        Cursor cursor = ((ReadPagerActivity)getActivity()).getAllBooks();
+        Cursor cursor = DatabaseAccess.getAllBooks();
 
         while (cursor.moveToNext()){
-            ((ReadPagerActivity)getActivity()).updatePageNotShown();
+            DatabaseAccess.updatePageNotShown();
         }
         cursor.close();
 

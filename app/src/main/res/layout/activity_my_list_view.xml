@@ -6,43 +6,43 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:weightSum="1">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingLeft="15dp"-->
+        <!--android:paddingRight="15dp">-->
 
-        <EditText
-            android:id="@+id/et_custom_book_name"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:inputType="text"
-            android:hint="@string/add_book_name"
-            android:textSize="12sp"
-            android:layout_gravity="start"
-            android:gravity="center"
-            />
-        <EditText
-            android:id="@+id/et_custom_author_name"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:inputType="text"
-            android:hint="@string/add_book_author"
-            android:textSize="12sp"
-            android:layout_gravity="end"
-            android:gravity="center"/>
-    </LinearLayout>
-    <Button
-        android:id="@+id/btn_add_guest"
-        android:layout_gravity="end"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:text="@string/add_book"
-        android:onClick="addToBookList"
-        android:textSize="12sp"/>
+        <!--<EditText-->
+            <!--android:id="@+id/et_custom_book_name"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:inputType="text"-->
+            <!--android:hint="@string/add_book_name"-->
+            <!--android:textSize="12sp"-->
+            <!--android:layout_gravity="start"-->
+            <!--android:gravity="center"-->
+            <!--/>-->
+        <!--<EditText-->
+            <!--android:id="@+id/et_custom_author_name"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:inputType="text"-->
+            <!--android:hint="@string/add_book_author"-->
+            <!--android:textSize="12sp"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:gravity="center"/>-->
+    <!--</LinearLayout>-->
+    <!--<Button-->
+        <!--android:id="@+id/btn_add_guest"-->
+        <!--android:layout_gravity="end"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:text="@string/add_book"-->
+        <!--android:onClick="addToBookList"-->
+        <!--android:textSize="12sp"/>-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_books_list"
         android:layout_width="match_parent"

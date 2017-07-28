@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import com.example.admin.bookapp.R;
+
 
 public class WhatBookDialogFragment extends DialogFragment {
 
@@ -27,7 +29,7 @@ public class WhatBookDialogFragment extends DialogFragment {
         String bookAuthor = args[2];
 
         builder.setMessage(bookName+"\n"+bookAuthor)
-                .setPositiveButton("Add to list", new DialogInterface.OnClickListener(){
+                .setPositiveButton(R.string.add_to_list_btn, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         mListener.onDialogPositiveClick(bookId);
@@ -35,7 +37,7 @@ public class WhatBookDialogFragment extends DialogFragment {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel_btn, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         new DialogInterface.OnClickListener(){

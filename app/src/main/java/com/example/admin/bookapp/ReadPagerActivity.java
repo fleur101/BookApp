@@ -1,6 +1,5 @@
 package com.example.admin.bookapp;
 
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,8 +13,7 @@ import android.widget.ProgressBar;
 
 import com.example.admin.bookapp.Fragments.ReadPageFragment;
 import com.example.admin.bookapp.Fragments.WhatBookDialogFragment;
-import com.example.admin.bookapp.data.BookListContract;
-import com.example.admin.bookapp.data.BookListDbHelper;
+import com.example.admin.bookapp.data.DatabaseAccess;
 
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
@@ -65,7 +63,7 @@ public class ReadPagerActivity extends BaseActivity implements  NoticeDialogList
 
 
 
-    private static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 63;
     private ViewPager mPager;
     private SQLiteDatabase mDb;
 
@@ -74,7 +72,7 @@ public class ReadPagerActivity extends BaseActivity implements  NoticeDialogList
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_read_pager, mContentFrame);
 
-        setTitle(R.string.book_coaster);
+        setTitle("Книговорот");
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -82,13 +80,14 @@ public class ReadPagerActivity extends BaseActivity implements  NoticeDialogList
         ProgressBar mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
 
-        BookListDbHelper dbHelper = new BookListDbHelper(this);
-        mDb = dbHelper.getWritableDatabase();
-
-        Cursor cursor = getAllBooks();
+        //CustomBookListDbHelper dbHelper = new CustomBookListDbHelper(this);
+        //mDb = dbHelper.getWritableDatabase();
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        Cursor cursor = DatabaseAccess.getAllBooks();
 
         while (cursor.moveToNext()){
-            updatePageNotShown();
+            DatabaseAccess.updatePageNotShown();
         }
         cursor.close();
 
@@ -115,19 +114,20 @@ public class ReadPagerActivity extends BaseActivity implements  NoticeDialogList
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onDialogPositiveClick(int id) {
-        updatePageInList(id);
+        DatabaseAccess.updatePageInList(id);
 
     }
-
-    public int updatePageInList(int bookId){
-        String strFilter = BookListContract.BookListItem._ID + " = ?";
-        ContentValues cv = new ContentValues();
-        cv.put(BookListContract.BookListItem.COLUMN_IN_MY_LIST, "Да");
-        return mDb.update(BookListContract.BookListItem.TABLE_NAME, cv, strFilter, new String[]{Integer.toString(bookId)});
-    }
-
-
 
     public void btnClickWhatBook(int id, String book, String author) {
         String args[]={Integer.toString(id), book, author};
@@ -158,51 +158,6 @@ public class ReadPagerActivity extends BaseActivity implements  NoticeDialogList
         }
     }
 
-
-    public Cursor cursorBookPage(){
-
-        String selection = BookListContract.BookListItem.COLUMN_ALREADY_SHOWN + " = ?";
-        String selectionArgs[] = {"Нет"};
-        return mDb.query(
-                BookListContract.BookListItem.TABLE_NAME,
-                null,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                "RANDOM() LIMIT 1"
-        );
-    }
-
-    public Cursor getAllBooks(){
-        return mDb.query(
-            BookListContract.BookListItem.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-    }
-
-
-
-    public int updatePageShown(int bookId){
-        String strFilter = BookListContract.BookListItem._ID + " = ?";
-        String[] selectionsArgs={String.valueOf(bookId)};
-        ContentValues cv = new ContentValues();
-        cv.put(BookListContract.BookListItem.COLUMN_ALREADY_SHOWN, "Да");
-        return mDb.update(BookListContract.BookListItem.TABLE_NAME, cv, strFilter, selectionsArgs );
-    }
-
-    public int updatePageNotShown(){
-
-        ContentValues cv = new ContentValues();
-        cv.put(BookListContract.BookListItem.COLUMN_ALREADY_SHOWN, "Нет");
-        return mDb.update(BookListContract.BookListItem.TABLE_NAME, cv, null, null);
-    }
 
 
 

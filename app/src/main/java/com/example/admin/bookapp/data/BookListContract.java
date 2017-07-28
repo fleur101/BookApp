@@ -8,15 +8,15 @@ import android.provider.BaseColumns;
 
 public class BookListContract {
 
-    public static final class BookListItem implements BaseColumns{
-        public static final String TABLE_NAME="bookList";
-        public static final String COLUMN_BOOK_NAME="bookName";
-        public static final String COLUMN_BOOK_AUTHOR="bookAuthor";
-        public static final String COLUMN_BOOK_PAGE="bookPage";
-        public static final String COLUMN_TIMESTAMP = "timestamp";
-        public static final String COLUMN_ALREADY_SHOWN="bookShown";
-        public static final String COLUMN_IN_MY_LIST="bookInList";
-    }
+//    public static final class BookListItem implements BaseColumns{
+//        public static final String TABLE_NAME="bookList";
+//        public static final String COLUMN_BOOK_NAME="bookName";
+//        public static final String COLUMN_BOOK_AUTHOR="bookAuthor";
+//        public static final String COLUMN_BOOK_PAGE="bookPage";
+//        public static final String COLUMN_TIMESTAMP = "timestamp";
+//        public static final String COLUMN_ALREADY_SHOWN="bookShown";
+//        public static final String COLUMN_IN_MY_LIST="bookInList";
+//    }
 
     public static final class CustomBookListItem implements BaseColumns{
         public static final String TABLE_NAME="customBookList";
