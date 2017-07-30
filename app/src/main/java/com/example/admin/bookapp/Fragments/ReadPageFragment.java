@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.admin.bookapp.R;
 import com.example.admin.bookapp.ReadPagerActivity;
-import com.example.admin.bookapp.data.BookListDbHelper;
 import com.example.admin.bookapp.data.DatabaseAccess;
 
 
@@ -25,14 +24,20 @@ public class ReadPageFragment extends Fragment {
     private Button mWhatBookButton;
     private TextView mBookPageNumTextView;
 
-    int mNum;
+    private static int bookId;
+    private static String bookName;
+    private static String bookAuthor;
+    private static String bookPage;
 
 
 
-    static ReadPageFragment newInstance(int num) {
+    public static ReadPageFragment newInstance(int bookId, String bookName, String bookAuthor, String bookPage) {
         ReadPageFragment fragment = new ReadPageFragment();
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        args.putInt("bookId", bookId);
+        args.putString("bookName", bookName);
+        args.putString("bookAuthor", bookAuthor);
+        args.putString("bookPage", bookPage);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,7 +51,12 @@ public class ReadPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments()!=null ? getArguments().getInt("num") :1;
+        if (getArguments()!=null){
+            bookId = getArguments().getInt("bookId");
+            bookName = getArguments().getString("bookName");
+            bookAuthor=getArguments().getString("bookAuthor");
+            bookPage=getArguments().getString("bookPage");
+        }
     }
 
     @Override
@@ -58,14 +68,14 @@ public class ReadPageFragment extends Fragment {
         mBookPageTextView =(TextView)  view.findViewById(R.id.tv_book_contents);
         mWhatBookButton = (Button) view.findViewById(R.id.btn_what_book);
 
-        Cursor cursor = DatabaseAccess.getBookPage();
-        cursor.moveToFirst();
-
-        final int bookId = cursor.getInt(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_ID));
-        final String bookAuthor = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_NAME));
-        final String bookName = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_AUTHOR));
-        String bookPage = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_PAGE));
-        DatabaseAccess.updatePageShown(bookId);
+//        Cursor cursor = DatabaseAccess.getBookPage();
+//        cursor.moveToFirst();
+//
+//        final int bookId = cursor.getInt(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_ID));
+//        final String bookAuthor = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_NAME));
+//        final String bookName = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_AUTHOR));
+//        String bookPage = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_PAGE));
+//        DatabaseAccess.updatePageShown(bookId);
 
         mBookPageNumTextView.setText("Отрывок №"+bookId);
         mBookPageTextView.setText(bookPage);

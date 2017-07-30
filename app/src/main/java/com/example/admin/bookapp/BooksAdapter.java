@@ -10,10 +10,6 @@ import android.widget.TextView;
 
 import com.example.admin.bookapp.data.BookListDbHelper;
 
-/**
- * Created by Admin on 17.07.2017.
- */
-
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapterViewHolder> {
 
     private Context mContext;

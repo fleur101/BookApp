@@ -37,8 +37,7 @@ public class DatabaseAccess {
     }
 
     public static Cursor getBookPage(){
-       // String selection = BookListDbHelper.COLUMN_IN_MY_LIST + " = ?";
-//        String selectionArgs [] = {"Да"};
+
         return database.query(
                 BookListDbHelper.TABLE_NAME,
                 null,

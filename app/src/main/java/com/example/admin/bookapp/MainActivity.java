@@ -10,7 +10,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-    private TextView mErrorMsgDisplayTextView;
     private TextView mWelcomeTextView;
     private TextView mBookLoverTextView;
     private TextView mChooseBookLanguage;
@@ -22,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mErrorMsgDisplayTextView = (TextView) findViewById(R.id.tv_error_message_display);
         mWelcomeTextView = (TextView) findViewById(R.id.tv_welcome);
         mBookLoverTextView = (TextView) findViewById(R.id.tv_book_lover);
         mChooseBookLanguage = (TextView) findViewById(R.id.tv_choose_book_language);
