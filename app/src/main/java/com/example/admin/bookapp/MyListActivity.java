@@ -16,7 +16,7 @@ import com.example.admin.bookapp.data.DatabaseAccess;
  * Created by Admin on 17.07.2017.
  */
 
-public class MyListActivity extends BaseActivity {
+public class MyListActivity extends DrawerActivity {
 
     private SQLiteDatabase mDb;
     private BooksAdapter mAdapter;

@@ -22,4 +22,11 @@
     <string name="profile_name">Bookster</string>
     <string name="cancel_btn">Отмена</string>
     <string name="add_to_list_btn">Добавить в список</string>
+    <string name="bookcoaster">Книговорот</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

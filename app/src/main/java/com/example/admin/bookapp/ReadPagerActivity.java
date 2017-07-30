@@ -18,7 +18,7 @@ import com.example.admin.bookapp.data.DatabaseAccess;
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
 
-public class ReadPagerActivity extends BaseActivity implements  NoticeDialogListener{
+public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener{
 
 
 

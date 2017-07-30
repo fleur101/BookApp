@@ -32,7 +32,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ReadPagerActivity" />
         </activity>
-        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".DrawerActivity" />
     </application>
 
 </manifest>
