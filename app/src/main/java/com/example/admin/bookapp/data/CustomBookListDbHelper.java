@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.example.admin.bookapp.data.BookListContract.*;
+import static com.example.admin.bookapp.data.CustomBookListContract.*;
 
 /**
  * Created by Admin on 14.07.2017.
@@ -14,6 +14,7 @@ public class CustomBookListDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "booklist.db";
     public static final int DATABASE_VERSION = 6;
+
 
     public CustomBookListDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

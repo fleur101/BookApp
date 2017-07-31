@@ -1,55 +1,74 @@
 package com.example.admin.bookapp;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import com.example.admin.bookapp.Fragments.ReadPageFragment;
 import com.example.admin.bookapp.Fragments.WhatBookDialogFragment;
-import com.example.admin.bookapp.data.BookListDbHelper;
+import com.example.admin.bookapp.data.BookListKazContract;
+import com.example.admin.bookapp.data.BookListRusContract;
 import com.example.admin.bookapp.data.DatabaseAccess;
 
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
 
-public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener{
+
+
+
+    public static int bookId;
+
+
+    public static String bookName;
+    public static String bookAuthor;
+    public static String bookPage;
+
 
 
     private static final int NUM_PAGES = 63;
+    private static final String TAG = "READ_PAGER_ACTIVITY";
     private ViewPager mPager;
-    private ProgressBar mLoadingIndicator;
-    private static int bookId;
-    private static String bookName;
-    private static String bookAuthor;
-    private static String bookPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_read_pager, mContentFrame);
 
+        SharedPreferences settings = getSharedPreferences(MainActivity.MY_LAN_PREFS, MODE_PRIVATE);
+        String key = "lan";
+        String lan = settings.getString(key, "");
         setTitle("Книговорот");
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        ProgressBar mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
+        DatabaseAccess databaseAccess = null;
+        Log.e(TAG, "onStart: before create database access ");
 
-        //CustomBookListDbHelper dbHelper = new CustomBookListDbHelper(this);
-        //mDb = dbHelper.getWritableDatabase();
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        if (lan.compareTo("rus") == 0) {
+            databaseAccess = DatabaseAccess.getInstance(this, BookListRusContract.DATABASE_NAME, BookListRusContract.DATABASE_VERSION);
+        } else if (lan.compareTo("kaz") == 0){
+            databaseAccess=DatabaseAccess.getInstance(this, BookListKazContract.DATABASE_NAME, BookListKazContract.DATABASE_VERSION);
+        } else {
+            Log.e(TAG, "onCreate: error database access initializing");
+        }
         databaseAccess.open();
         Cursor cursor = DatabaseAccess.getAllBooks();
+        Log.e(TAG, "onStart:after db open ");
+
+
+
 
         while (cursor.moveToNext()){
             DatabaseAccess.updatePageNotShown();
@@ -103,48 +122,6 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         dialogFragment.show(getSupportFragmentManager(), "what book");
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, final Bundle args) {
-        return new AsyncTaskLoader<Cursor>(this) {
-
-            @Override
-            protected void onStartLoading() {
-                super.onStartLoading();
-                if (args == null)return;
-                mLoadingIndicator.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public Cursor loadInBackground() {
-                loadData();
-                return null;
-            }
-        };
-
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
-
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader loader) {
-    }
-
-    public void loadData(){
-        Cursor cursor = DatabaseAccess.getBookPage();
-        cursor.moveToFirst();
-
-         bookId = cursor.getInt(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_ID));
-         bookAuthor = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_NAME));
-         bookName = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_AUTHOR));
-         bookPage = cursor.getString(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_PAGE));
-        DatabaseAccess.updatePageShown(bookId);
-    }
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
 
         ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -155,7 +132,7 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         @Override
         public Fragment getItem(int position) {
 
-            return ReadPageFragment.newInstance(bookId, bookName, bookAuthor, bookPage);
+            return new ReadPageFragment();
         }
 
         @Override

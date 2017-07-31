@@ -15,13 +15,13 @@ public class DatabaseAccess {
     private static SQLiteDatabase database;
     private static DatabaseAccess instance;
 
-    private DatabaseAccess(Context context) {
-        this.openHelper = new BookListDbHelper(context);
+    private DatabaseAccess(Context context, String dbName, int dbVersion) {
+        this.openHelper = new BookListDbHelper(context, dbName, dbVersion);
     }
 
-    public static DatabaseAccess getInstance(Context context) {
+    public static DatabaseAccess getInstance(Context context, String dbName, int dbVersion) {
         if (instance == null) {
-            instance = new DatabaseAccess(context);
+            instance = new DatabaseAccess(context, dbName, dbVersion);
         }
         return instance;
     }
@@ -47,7 +47,6 @@ public class DatabaseAccess {
                 null,
                 " RANDOM() LIMIT 1"
         );
-  //      return database.rawQuery("SELECT * FROM Book ORDER BY RANDOM() LIMIT 1", null);
     }
 
     public Cursor getBooksInMyList(){
@@ -62,7 +61,6 @@ public class DatabaseAccess {
                 null,
                 null
         );
-      //  return database.rawQuery("SELECT * FROM Book WHERE bookInList = ?", new String[]{"Да"});
     }
     public static Cursor getAllBooks(){
         return database.query(
@@ -74,26 +72,20 @@ public class DatabaseAccess {
                 null,
                 null
         );
-       // return database.rawQuery("SELECT * FROM Book", null);
     }
     public static void updatePageShown(int bookId){
         ContentValues cv = new ContentValues();
         cv.put(BookListDbHelper.COLUMN_ALREADY_SHOWN, "Да");
         database.update(BookListDbHelper.TABLE_NAME, cv, BookListDbHelper.COLUMN_BOOK_ID+"=" + bookId, null);
-        // database.rawQuery("UPDATE Book SET bookShown=? WHERE _id = "+bookId, new String[]{"Да"});
     }
 
     public static void updatePageNotShown() {
-
         ContentValues cv = new ContentValues();
         cv.put(BookListDbHelper.COLUMN_ALREADY_SHOWN, "Нет");
         database.update(BookListDbHelper.TABLE_NAME, cv, null, null);
-       // database.rawQuery("UPDATE Book SET bookShown=?", new String[]{"Нет"});
     }
 
     public static void updatePageInList(int bookId){
-        //database.rawQuery("UPDATE Book SET bookInList=? WHERE _id ="+bookId, new String[]{"Да"});
-
         ContentValues cv = new ContentValues();
         cv.put(BookListDbHelper.COLUMN_IN_MY_LIST, "Да");
         database.update(BookListDbHelper.TABLE_NAME, cv, BookListDbHelper.COLUMN_BOOK_ID+"=" + bookId, null);

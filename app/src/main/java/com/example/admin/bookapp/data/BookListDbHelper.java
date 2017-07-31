@@ -10,20 +10,18 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class BookListDbHelper extends SQLiteAssetHelper {
 
-    private static final String DATABASE_NAME = "books.db";
-    private static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME="Book";
     public static final String COLUMN_BOOK_ID="_id";
     public static final String COLUMN_BOOK_NAME="bookName";
     public static final String COLUMN_BOOK_AUTHOR="bookAuthor";
     public static final String COLUMN_BOOK_PAGE="bookPage";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
     public static final String COLUMN_ALREADY_SHOWN="bookShown";
     public static final String COLUMN_IN_MY_LIST="bookInList";
 
-    public BookListDbHelper(Context context) {
+    public BookListDbHelper(Context context, String DATABASE_NAME, int DATABASE_VERSION) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
 
 
 }

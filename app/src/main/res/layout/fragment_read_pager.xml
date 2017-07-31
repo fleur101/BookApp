@@ -4,8 +4,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<ProgressBar
+    android:id="@+id/pb_loading_indicator"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:layout_gravity="center"
+    android:visibility="invisible"/>
 
 <ScrollView
+        android:visibility="visible"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/sv_book_contents"
         android:layout_width="368dp"

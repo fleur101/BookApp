@@ -29,4 +29,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="lan_rus">rus</string>
+    <string name="lan_kaz">kaz</string>
 </resources>

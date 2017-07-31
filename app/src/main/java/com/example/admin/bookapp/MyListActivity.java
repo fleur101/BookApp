@@ -1,6 +1,7 @@
 package com.example.admin.bookapp;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 
-import com.example.admin.bookapp.data.BookListContract;
+import com.example.admin.bookapp.data.BookListKazContract;
+import com.example.admin.bookapp.data.BookListRusContract;
+import com.example.admin.bookapp.data.CustomBookListContract;
 import com.example.admin.bookapp.data.DatabaseAccess;
 
 /**
@@ -24,7 +27,7 @@ public class MyListActivity extends DrawerActivity {
     private RecyclerView mListRecyclerView;
     private EditText customBookName;
     private EditText customAuthorName;
-
+    private String lan;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +41,18 @@ public class MyListActivity extends DrawerActivity {
         mListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        CustomBookListDbHelper dbHelper =  new CustomBookListDbHelper(this);
 //        mDb = dbHelper.getReadableDatabase();
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        SharedPreferences settings = getSharedPreferences(MainActivity.MY_LAN_PREFS, MODE_PRIVATE);
+        String key = "language";
+        lan = settings.getString(key, "");
+        DatabaseAccess databaseAccess;
+        if (lan.compareTo("rus") == 0) {
+            databaseAccess = DatabaseAccess.getInstance(this, BookListRusContract.DATABASE_NAME, BookListRusContract.DATABASE_VERSION);
+        } else {
+            databaseAccess=DatabaseAccess.getInstance(this, BookListKazContract.DATABASE_NAME, BookListKazContract.DATABASE_VERSION);
+        }
         databaseAccess.open();
         Cursor cursor = databaseAccess.getBooksInMyList();
+
 
 
         mAdapter = new BooksAdapter(this, cursor);
@@ -50,7 +62,12 @@ public class MyListActivity extends DrawerActivity {
     public void addToBookList(View view){
         if (customBookName.getText().length()==0 || customAuthorName.getText().length()==0)return;
         addNewBook(customBookName.getText().toString(), customAuthorName.getText().toString());
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        DatabaseAccess databaseAccess;
+        if (lan.compareTo("rus") == 0) {
+            databaseAccess = DatabaseAccess.getInstance(this, BookListRusContract.DATABASE_NAME, BookListRusContract.DATABASE_VERSION);
+        } else {
+            databaseAccess=DatabaseAccess.getInstance(this, BookListKazContract.DATABASE_NAME, BookListKazContract.DATABASE_VERSION);
+        }
         databaseAccess.open();
         Cursor newCursor = databaseAccess.getBooksInMyList();
         mAdapter.swapCursor(newCursor);
@@ -62,53 +79,53 @@ public class MyListActivity extends DrawerActivity {
 
 //    public Cursor getCustomBooksInMyList(){
 //        return mDb.query(
-//                BookListContract.CustomBookListItem.TABLE_NAME,
+//                CustomBookListContract.CustomBookListItem.TABLE_NAME,
 //                null,
 //                null,
 //                null,
 //                null,
 //                null,
-//                BookListContract.CustomBookListItem.COLUMN_TIMESTAMP
+//                CustomBookListContract.CustomBookListItem.COLUMN_TIMESTAMP
 //        );
 //    }
 
 //    public Cursor  getBooksInMyList(){
-//        String selection = BookListContract.BookListItem.COLUMN_IN_MY_LIST + " = ?";
+//        String selection = CustomBookListContract.BookListItem.COLUMN_IN_MY_LIST + " = ?";
 //        String selectionArgs [] = {"Да"};
 //        return mDb.query(
-//                BookListContract.BookListItem.TABLE_NAME,
+//                CustomBookListContract.BookListItem.TABLE_NAME,
 //                null,
 //                selection,
 //                selectionArgs,
 //                null,
 //                null,
-//                BookListContract.BookListItem.COLUMN_TIMESTAMP
+//                CustomBookListContract.BookListItem.COLUMN_TIMESTAMP
 //        );
 //    }
 //    public Cursor getBooksInMyList(){
 //
 ////        return mDb.rawQuery("SELECT bookName, bookAuthor FROM "+ BookListDbHelper.TABLE_NAME+
 ////                        " WHERE "+ BookListDbHelper.COLUMN_IN_MY_LIST+ " = 'Да'"+
-////                        " UNION SELECT "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
-////                        ", "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + BookListContract.CustomBookListItem.TABLE_NAME
+////                        " UNION SELECT "+ CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
+////                        ", "+ CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + CustomBookListContract.CustomBookListItem.TABLE_NAME
 ////                        , new String[]{"Да"});
 //
 //        return BookListDbHelper.TABLE_NAME.rawQuery("SELECT bookName, bookAuthor FROM "+ BookListDbHelper.TABLE_NAME+
 //                        " WHERE "+ BookListDbHelper.COLUMN_IN_MY_LIST+ " = 'Да'"+
-//                        " UNION SELECT "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
-//                        ", "+ BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + BookListContract.CustomBookListItem.TABLE_NAME
+//                        " UNION SELECT "+ CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME+
+//                        ", "+ CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR+" FROM " + CustomBookListContract.CustomBookListItem.TABLE_NAME
 //                , new String[]{"Да"});
 //    }
 
     private long addNewBook(String bookName, String authorName){
         ContentValues cv = new ContentValues();
-        cv.put(BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME, bookName);
-        cv.put(BookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR, authorName);
-        return mDb.insert(BookListContract.CustomBookListItem.TABLE_NAME, null, cv);
+        cv.put(CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_NAME, bookName);
+        cv.put(CustomBookListContract.CustomBookListItem.COLUMN_CUSTOM_BOOK_AUTHOR, authorName);
+        return mDb.insert(CustomBookListContract.CustomBookListItem.TABLE_NAME, null, cv);
     }
 
     private boolean removeBook(long id){
-        return mDb.delete(BookListContract.CustomBookListItem.TABLE_NAME, BookListContract.CustomBookListItem._ID + " = " + id, null)>0;
+        return mDb.delete(CustomBookListContract.CustomBookListItem.TABLE_NAME, CustomBookListContract.CustomBookListItem._ID + " = " + id, null)>0;
     }
 
     @Override
