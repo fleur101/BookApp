@@ -37,7 +37,6 @@ public class CustomBookListDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-      //  sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ BookListItem.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ CustomBookListItem.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }

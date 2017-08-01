@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Bookster</string>
+    <string name="tv_welcome">Сәлеметсің бе, </string>
+    <string name="tv_book_lover">оқырман!</string>
+    <string name="btn_rus">орыс</string>
+    <string name="btn_kaz">қазақ</string>
+    <string name="error_message">Произошла ошибка</string>
+    <string name="choose_language_of_the_book">Кітаптың тілін таңда</string>
+
+    <string name="add_list">Тізімге қосу</string>
+    <string name="cancel">Жою</string>
+    <string name="what_book">Бұл қандай кітап?</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_close">drawer closed</string>
+    <string name="my_list">Менің кітаптарым</string>
+    <string name="add_book">Кітапты қосу</string>
+    <string name="add_book_name">Кітаптың аты</string>
+    <string name="add_book_author">Автордың аты</string>
+    <string name="profile_name">Bookster</string>
+    <string name="cancel_btn">Жою</string>
+    <string name="bookcoaster">Кітап үзінділері</string>
+
+    <string name="settings">Параметрлері</string>
+    <string name="lan_rus">орыс</string>
+    <string name="lan_kaz">қазақ</string>
+    <string name="excerpt">Үзінді №</string>
+    <string name="contact_developer">Әзірлеушіге жазу</string>
+</resources>

@@ -60,7 +60,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapter
         TextView nameTextView;
         TextView authorTextView;
 
-        public BooksAdapterViewHolder(View itemView) {
+        private BooksAdapterViewHolder(View itemView) {
             super(itemView);
             nameTextView = (TextView) itemView.findViewById(R.id.tv_book_name);
             authorTextView = (TextView) itemView.findViewById(R.id.tv_author_name);

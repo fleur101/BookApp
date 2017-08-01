@@ -87,7 +87,7 @@ public class ReadPageFragment extends Fragment {
         mProgressBar.setVisibility(View.INVISIBLE);
         mBookPageScrollView.setVisibility(View.VISIBLE);
 
-        mBookPageNumTextView.setText("Отрывок №"+bookId);
+        mBookPageNumTextView.setText(getString(R.string.excerpt)+bookId);
         mBookPageTextView.setText(bookPage);
         mWhatBookButton.setOnClickListener(new View.OnClickListener() {
             @Override

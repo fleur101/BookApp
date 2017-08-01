@@ -29,7 +29,7 @@ public class WhatBookDialogFragment extends DialogFragment {
         String bookAuthor = args[2];
 
         builder.setMessage(bookName+"\n"+bookAuthor)
-                .setPositiveButton(R.string.add_to_list_btn, new DialogInterface.OnClickListener(){
+                .setPositiveButton(R.string.add_list, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         mListener.onDialogPositiveClick(bookId);

@@ -15,9 +15,7 @@ import com.example.admin.bookapp.data.BookListRusContract;
 import com.example.admin.bookapp.data.CustomBookListContract;
 import com.example.admin.bookapp.data.DatabaseAccess;
 
-/**
- * Created by Admin on 17.07.2017.
- */
+
 
 public class MyListActivity extends DrawerActivity {
 
@@ -32,7 +30,7 @@ public class MyListActivity extends DrawerActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_my_list_view, mContentFrame);
-        setTitle(R.string.my_books);
+        setTitle(R.string.my_list);
 
 //        customBookName = (EditText) findViewById(R.id.et_custom_book_name);
 //        customAuthorName = (EditText) findViewById(R.id.et_custom_author_name);

@@ -24,16 +24,6 @@ import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeD
 public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener{
 
 
-
-    public static int bookId;
-
-
-    public static String bookName;
-    public static String bookAuthor;
-    public static String bookPage;
-
-
-
     private static final int NUM_PAGES = 63;
     private static final String TAG = "READ_PAGER_ACTIVITY";
     private ViewPager mPager;
@@ -46,7 +36,7 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         SharedPreferences settings = getSharedPreferences(MainActivity.MY_LAN_PREFS, MODE_PRIVATE);
         String key = "lan";
         String lan = settings.getString(key, "");
-        setTitle("Книговорот");
+        setTitle(getString(R.string.bookcoaster));
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -54,18 +44,18 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         ProgressBar mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
         DatabaseAccess databaseAccess = null;
-        Log.e(TAG, "onStart: before create database access ");
 
-        if (lan.compareTo("rus") == 0) {
+        if (lan.compareTo(getString(R.string.lan_rus)) == 0) {
             databaseAccess = DatabaseAccess.getInstance(this, BookListRusContract.DATABASE_NAME, BookListRusContract.DATABASE_VERSION);
-        } else if (lan.compareTo("kaz") == 0){
+        } else if (lan.compareTo(getString(R.string.lan_kaz)) == 0){
             databaseAccess=DatabaseAccess.getInstance(this, BookListKazContract.DATABASE_NAME, BookListKazContract.DATABASE_VERSION);
         } else {
             Log.e(TAG, "onCreate: error database access initializing");
         }
-        databaseAccess.open();
+        if (databaseAccess != null) {
+            databaseAccess.open();
+        }
         Cursor cursor = DatabaseAccess.getAllBooks();
-        Log.e(TAG, "onStart:after db open ");
 
 
 
