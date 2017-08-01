@@ -1,5 +1,7 @@
 package com.example.admin.bookapp;
 
+import android.app.LoaderManager;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,7 +23,7 @@ import com.example.admin.bookapp.data.DatabaseAccess;
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
 
-public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener{
+public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogListener, LoaderManager.LoaderCallbacks<Cursor>{
 
 
     private static final int NUM_PAGES = 63;
@@ -41,6 +43,8 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
      //   mPager.setOffscreenPageLimit(10);
+        getLoaderManager().initLoader(0, null, this);
+
 
         ProgressBar mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mLoadingIndicator.setVisibility(View.INVISIBLE);
@@ -56,15 +60,12 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         if (databaseAccess != null) {
             databaseAccess.open();
         }
-        Cursor cursor = DatabaseAccess.getAllBooks();
-
-
-
-
-        while (cursor.moveToNext()){
-            DatabaseAccess.updatePageNotShown();
-        }
-        cursor.close();
+//        Cursor cursor = DatabaseAccess.getAllBooks();
+//
+//        while (cursor.moveToNext()){
+//            DatabaseAccess.updatePageNotShown();
+//        }
+//        cursor.close();
 
 
     }
@@ -111,6 +112,21 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         WhatBookDialogFragment dialogFragment = new WhatBookDialogFragment();
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getSupportFragmentManager(), "what book");
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
