@@ -40,6 +40,7 @@ public class ReadPagerActivity extends DrawerActivity implements  NoticeDialogLi
         mPager = (ViewPager) findViewById(R.id.pager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+     //   mPager.setOffscreenPageLimit(10);
 
         ProgressBar mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mLoadingIndicator.setVisibility(View.INVISIBLE);

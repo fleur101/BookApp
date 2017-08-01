@@ -73,8 +73,8 @@ public class ReadPageFragment extends Fragment {
 
         Cursor cursor = DatabaseAccess.getBookPage();
         cursor.moveToFirst();
-        Log.e(READ_PAGE_FRAGMENT_TAG, cursor.getColumnName(0) + " " +
-        cursor.getColumnName(1));
+//        Log.e(READ_PAGE_FRAGMENT_TAG, cursor.getColumnName(0) + " " +
+//        cursor.getColumnName(1));
 
 
         final int bookId = cursor.getInt(cursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_ID));
