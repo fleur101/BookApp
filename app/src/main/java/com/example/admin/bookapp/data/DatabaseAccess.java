@@ -39,7 +39,7 @@ public class DatabaseAccess {
     public static Cursor getBookPage(){
 
         return database.query(
-                BookListDbHelper.TABLE_NAME,
+                BookListContract.TABLE_NAME,
                 null,
                 null,
                 null,
@@ -50,10 +50,10 @@ public class DatabaseAccess {
     }
 
     public Cursor getBooksInMyList(){
-        String selection = BookListDbHelper.COLUMN_IN_MY_LIST + " = ?";
+        String selection = BookListContract.COLUMN_IN_MY_LIST + " = ?";
         String selectionArgs [] = {"Да"};
         return database.query(
-                BookListDbHelper.TABLE_NAME,
+                BookListContract.TABLE_NAME,
                 null,
                 selection,
                 selectionArgs,
@@ -64,7 +64,7 @@ public class DatabaseAccess {
     }
     public static Cursor getAllBooks(){
         return database.query(
-                BookListDbHelper.TABLE_NAME,
+                BookListContract.TABLE_NAME,
                 null,
                 null,
                 null,
@@ -75,20 +75,20 @@ public class DatabaseAccess {
     }
     public static void updatePageShown(int bookId){
         ContentValues cv = new ContentValues();
-        cv.put(BookListDbHelper.COLUMN_ALREADY_SHOWN, "Да");
-        database.update(BookListDbHelper.TABLE_NAME, cv, BookListDbHelper.COLUMN_BOOK_ID+"=" + bookId, null);
+        cv.put(BookListContract.COLUMN_ALREADY_SHOWN, "Да");
+        database.update(BookListContract.TABLE_NAME, cv, BookListContract.COLUMN_BOOK_ID+"=" + bookId, null);
     }
 
     public static void updatePageNotShown() {
         ContentValues cv = new ContentValues();
-        cv.put(BookListDbHelper.COLUMN_ALREADY_SHOWN, "Нет");
-        database.update(BookListDbHelper.TABLE_NAME, cv, null, null);
+        cv.put(BookListContract.COLUMN_ALREADY_SHOWN, "Нет");
+        database.update(BookListContract.TABLE_NAME, cv, null, null);
     }
 
     public static void updatePageInList(int bookId){
         ContentValues cv = new ContentValues();
-        cv.put(BookListDbHelper.COLUMN_IN_MY_LIST, "Да");
-        database.update(BookListDbHelper.TABLE_NAME, cv, BookListDbHelper.COLUMN_BOOK_ID+"=" + bookId, null);
+        cv.put(BookListContract.COLUMN_IN_MY_LIST, "Да");
+        database.update(BookListContract.TABLE_NAME, cv, BookListContract.COLUMN_BOOK_ID+"=" + bookId, null);
     }
 
 

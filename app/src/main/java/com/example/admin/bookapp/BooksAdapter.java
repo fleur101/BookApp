@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.admin.bookapp.data.BookListContract;
 import com.example.admin.bookapp.data.BookListDbHelper;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapterViewHolder> {
@@ -34,8 +35,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapter
         if (!mCursor.moveToPosition(position)){
             return;
         }
-        String bookName = mCursor.getString(mCursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_NAME));
-        String bookAuthor = mCursor.getString(mCursor.getColumnIndex(BookListDbHelper.COLUMN_BOOK_AUTHOR));
+        String bookName = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
+        String bookAuthor = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
         holder.nameTextView.setText(bookName);
         holder.authorTextView.setText(bookAuthor);
     }
