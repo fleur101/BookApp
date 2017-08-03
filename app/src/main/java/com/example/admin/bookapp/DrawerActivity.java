@@ -75,8 +75,8 @@ public class DrawerActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
         }
 
@@ -171,6 +171,9 @@ public class DrawerActivity extends AppCompatActivity {
                 break;
             case 2:
                 intent = new Intent(this, MyListActivity.class);
+                break;
+            case 3:
+                intent = new Intent(this, SettingsActivity.class);
                 break;
             default:
                 intent = new Intent (this, MyListActivity.class);

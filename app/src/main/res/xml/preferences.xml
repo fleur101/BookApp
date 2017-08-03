@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_lan_title">
+
     <ListPreference
         android:key="pref_lan"
-        android:title="@string/choose_language_of_the_book"/>
+        android:title="@string/choose_language_of_the_book"
+        android:entries="@array/language"
+        android:entryValues="@array/languageAlias"/>
+    </PreferenceCategory>
 </PreferenceScreen>

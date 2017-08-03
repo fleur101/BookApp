@@ -2,8 +2,10 @@ package com.example.admin.bookapp;
 
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -38,40 +40,23 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         mPager = (ViewPager) findViewById(R.id.pager);
         adapter = new CursorPagerAdapter(getSupportFragmentManager(), null);
         mPager.setAdapter(adapter);
-       // setUpDatabase();
-
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-        //
         getLoaderManager().initLoader(0, null, this);
+        SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 
-//        Cursor cursor = DatabaseAccess.getAllBooks();
-//
-//        while (cursor.moveToNext()){
-//            DatabaseAccess.updatePageNotShown();
-//        }
-//        cursor.close();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+
+                if(key.equals("pref_lan"))
+                    getLoaderManager().restartLoader(0, null, ReadPagerActivity.this);
+
+            }
+        };
+        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+
     }
-
-//    private void setUpDatabase() {
-  //      SharedPreferences settings = getSharedPreferences(MainActivity.MY_LAN_PREFS, MODE_PRIVATE);
-//        String key = "lan";
-//        String lan = settings.getString(key, "");
-//        DatabaseAccess databaseAccess = null;
-//        if (lan.compareTo(getString(R.string.lan_rus)) == 0) {
-//         //   databaseAccess = DatabaseAccess.getInstance(this, BookListDbHelper.DATABASE_NAME_RUS, BookListDbHelper.DATABASE_VERSION_RUS);
-//            BookListContentProvider contentProvider = new BookListContentProvider();
-//
-//        } else if (lan.compareTo(getString(R.string.lan_kaz)) == 0) {
-//          //  databaseAccess = DatabaseAccess.getInstance(this, BookListDbHelper.DATABASE_NAME_KZ, BookListDbHelper.DATABASE_VERSION_KZ);
-//            BookListContentProvider contentProvider = new BookListContentProvider();
-//
-//        } else {
-//            Log.e(TAG, "onCreate: error database access initializing");
-//        }
-//        if (databaseAccess != null) {
-//            databaseAccess.open();
-//        }
-//    }
 
 
     @Override
@@ -120,10 +105,6 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
 
         mLoadingIndicator.setVisibility(View.VISIBLE);
 
-
-//        CursorPagerAdapter mPagerAdapter = new CursorPagerAdapter(getSupportFragmentManager());
-//        mPager.setAdapter(mPagerAdapter);
-        //mPager.setOffscreenPageLimit(63);
 
         return new android.content.CursorLoader( this,
                 BookListContract.CONTENT_URI,
