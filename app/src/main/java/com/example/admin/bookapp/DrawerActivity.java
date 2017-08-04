@@ -33,7 +33,7 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        drawerListItems = new String[]{getString(R.string.bookcoaster), getString(R.string.my_list), getString(R.string.settings), getString(R.string.contact_developer)};
+        drawerListItems = new String[]{getString(R.string.eureka), getString(R.string.my_list), getString(R.string.settings), getString(R.string.about_app)};
 
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
@@ -51,8 +51,6 @@ public class DrawerActivity extends AppCompatActivity {
             }
         };
         mDrawerToggle.syncState();
-    //    NavigationView navigationView = (NavigationView) findViewById(R.id.left_drawer);
-     //   navigationView.setNavigationItemSelectedListener(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mDrawerLayout.setStatusBarBackgroundColor(getColor(R.color.colorPrimaryDark));
@@ -75,8 +73,8 @@ public class DrawerActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         }
 
@@ -129,27 +127,7 @@ public class DrawerActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-//
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//        Intent intent = null;
-//        if (id == R.id.bookcoaster) {
-//            intent = new Intent(this, ReadPagerActivity.class);
-//        } else if (id == R.id.my_books) {
-//            intent = new Intent(this, MyListActivity.class);
-//        } else if (id == R.id.settings) {
-//            intent = new Intent(this, MyListActivity.class);
-//        } else if (id == R.id.nav_share) {
-//            intent = new Intent(this, MyListActivity.class);
-//        } else if (id == R.id.contact) {
-//            intent = new Intent(this, MyListActivity.class);
-//        }
-//        startActivity(intent);
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
+
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener{
 

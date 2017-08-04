@@ -4,9 +4,6 @@ import android.content.Context;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-/**
- * Created by Gaukhar on 7/27/2017.
- */
 
 public class BookListDbHelper extends SQLiteAssetHelper {
 

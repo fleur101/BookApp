@@ -67,22 +67,14 @@ public class ReadPageFragment extends Fragment {
         Button mWhatBookButton = (Button) view.findViewById(R.id.btn_what_book);
 
         if (id >= 0){
-            Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: id>=0");
             Uri contentUri = ContentUris.withAppendedId(BookListContract.CONTENT_URI, id);
-            Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: "+contentUri.toString());
-            String selection="_id = ?";
-            String[] selectionArgs={String.valueOf(id)};
-            Cursor cursor = getActivity().getContentResolver().query(contentUri, null, selection, selectionArgs, null);
-            Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: "+cursor.getCount()+cursor.toString());
+            Cursor cursor = getActivity().getContentResolver().query(contentUri, null, null, null, null);
 
             if (cursor.moveToNext()) {
-                Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: CURSOR MOVED TO FIRST");
-
                 bookId = cursor.getInt(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_ID));
                 bookAuthor = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
                 bookName = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
                 bookPage = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_PAGE));
-               // DatabaseAccess.updatePageShown(bookId);
                 Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: book details: "+ bookId+ bookName+bookAuthor);
 
                 mBookPageNumTextView.setText(getString(R.string.excerpt) + bookId);

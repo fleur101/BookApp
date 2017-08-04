@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bookster</string>
+    <string name="app_name">Эврика</string>
     <string name="tv_welcome">Добро пожаловать, </string>
     <string name="tv_book_lover">книжный странник!</string>
     <string name="btn_rus">рус</string>
@@ -27,4 +27,5 @@
     <string name="contact_developer">Написать разработчику</string>
     <string name="about_app">О приложении</string>
     <string name="pref_lan_title">Язык</string>
+    <string name="eureka">Эврика</string>
 </resources>

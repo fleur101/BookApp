@@ -1,35 +1,41 @@
 package com.example.admin.bookapp;
 
 import android.app.LoaderManager;
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.admin.bookapp.Fragments.ReadPageFragment;
 import com.example.admin.bookapp.Fragments.WhatBookDialogFragment;
+import com.example.admin.bookapp.data.BookListContentProvider;
 import com.example.admin.bookapp.data.BookListContract;
-import com.example.admin.bookapp.data.DatabaseAccess;
 
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
 
-public class ReadPagerActivity extends DrawerActivity implements NoticeDialogListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class ReadPagerActivity extends DrawerActivity implements NoticeDialogListener, LoaderManager.LoaderCallbacks<Cursor>{
 
 
-    private static final int NUM_PAGES = 63;
-    private static final String TAG = "READ_PAGER_ACTIVITY";
+    private static final String TAG = "READ_PAGER_ACTIVITY_TAG";
     private ViewPager mPager;
     private CursorPagerAdapter adapter;
     private ProgressBar mLoadingIndicator;
+    SharedPreferences.OnSharedPreferenceChangeListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,22 +47,38 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         adapter = new CursorPagerAdapter(getSupportFragmentManager(), null);
         mPager.setAdapter(adapter);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+
+        Log.e(TAG, "onCreate: created");
         getLoaderManager().initLoader(0, null, this);
-        SharedPreferences.OnSharedPreferenceChangeListener prefListener;
+    }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        prefListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.e(TAG, "onStart: "+sharedPreferences.getString("lan", ""));
 
-                if(key.equals("pref_lan"))
-                    getLoaderManager().restartLoader(0, null, ReadPagerActivity.this);
+        mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Toast.makeText(ReadPagerActivity.this, "Preference Changed", Toast.LENGTH_SHORT).show();
+                if (key.equals("lan")) {
+                    Log.e(TAG, "onSharedPreferenceChanged: key is lan");
+                    ContentResolver resolver = getApplicationContext().getContentResolver();
+                    ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
+                    BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
+                    contentProvider.resetDatabase();
+                } else {
+                    Log.e(TAG, "key is not lan");
+                }
             }
         };
-        prefs.registerOnSharedPreferenceChangeListener(prefListener);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
 
     }
+
 
 
     @Override
@@ -71,12 +93,33 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume: resumed");
         getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Toast.makeText(ReadPagerActivity.this, "Preference Changed", Toast.LENGTH_SHORT).show();
+                if (key.equals("lan")) {
+                    Log.e(TAG, "onSharedPreferenceChanged: key is lan");
+                    ContentResolver resolver = getApplicationContext().getContentResolver();
+                    ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
+                    BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
+                    contentProvider.resetDatabase();
+                } else {
+                    Log.e(TAG, "key is not lan");
+                }
+            }
+        };
+        sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
+        Log.e(TAG, "onPause: paused");
+
     }
 
     @Override
@@ -87,7 +130,10 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
 
     @Override
     public void onDialogPositiveClick(int id) {
-        DatabaseAccess.updatePageInList(id);
+        Uri contentUri = ContentUris.withAppendedId(BookListContract.CONTENT_URI, id);
+        ContentValues cv = new ContentValues();
+        cv.put(BookListContract.COLUMN_IN_MY_LIST, "Да");
+        int added = getContentResolver().update(contentUri, cv, null, null);
 
     }
 
@@ -124,6 +170,8 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
+
+
 
     private class CursorPagerAdapter extends FragmentStatePagerAdapter {
         private Cursor mCursor;
@@ -165,6 +213,10 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener);
+
+
     }
 
 

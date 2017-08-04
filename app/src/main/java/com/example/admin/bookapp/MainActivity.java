@@ -1,25 +1,30 @@
 package com.example.admin.bookapp;
 
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.admin.bookapp.data.BookListContentProvider;
+import com.example.admin.bookapp.data.BookListContract;
+
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final String TAG_MAIN_ACTIVITY = "MAIN ACTIVITY";
+    private static final String TAG = "MAIN ACTIVITY_TAG";
     private TextView mWelcomeTextView;
     private TextView mBookLoverTextView;
     private TextView mChooseBookLanguage;
     private Button mRusButton;
     private Button mKazButton;
     public static final String MY_LAN_PREFS = "My language settings";
-    private static String key="lan";
     private static String value="";
 
     @Override
@@ -31,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
         mChooseBookLanguage = (TextView) findViewById(R.id.tv_choose_book_language);
         mRusButton = (Button) findViewById(R.id.btn_rus);
         mKazButton = (Button) findViewById(R.id.btn_kaz);
+        Log.e(TAG, "onCreate: created ");
     }
 
     public void butLanClick(View view){
-        SharedPreferences.Editor editor = getSharedPreferences(MY_LAN_PREFS, MODE_PRIVATE).edit();
 
         switch (view.getId()) {
             case R.id.btn_rus:
@@ -46,9 +51,14 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-        Log.e(TAG_MAIN_ACTIVITY, "butLanClick: "+ value);
-        editor.putString(key, value);
+        Log.e(TAG, "butLanClick: "+ value);
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        editor.putString("lan", value);
         editor.apply();
+        ContentResolver resolver = getApplicationContext().getContentResolver();
+        ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
+        BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
+        contentProvider.resetDatabase();
 
         Intent intent = new Intent(this, ReadPagerActivity.class);
         startActivity(intent);

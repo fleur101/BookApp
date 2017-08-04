@@ -11,19 +11,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.admin.bookapp.MainActivity;
 import com.example.admin.bookapp.R;
-
 
 
 public class BookListContentProvider extends ContentProvider {
 
     private static final String TAG = "CONTENT_PROVIDER_TAG";
     private BookListDbHelper mDbHelper;
-    private String dbName;
-    private int dbVersion;
+    private static String dbName;
+    private static int dbVersion;
 
     public static final int BOOKS=100;
     public static final int BOOK_WITH_ID=101;
@@ -31,28 +30,55 @@ public class BookListContentProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher=buildUriMatcher();
 
 
+
     @Override
     public boolean onCreate() {
-        SharedPreferences settings = getContext().getSharedPreferences(MainActivity.MY_LAN_PREFS, getContext().MODE_PRIVATE);
-        String key = "lan";
-        String lan = settings.getString(key, "");
-        if (lan.compareTo(getContext().getString(R.string.lan_rus)) == 0) {
-            dbName=BookListDbHelper.DATABASE_NAME_RUS;
-            dbVersion=BookListDbHelper.DATABASE_VERSION_RUS;
-        } else if (lan.compareTo(getContext().getString(R.string.lan_kaz)) == 0) {
-            dbName=BookListDbHelper.DATABASE_NAME_KZ;
-            dbVersion=BookListDbHelper.DATABASE_VERSION_KZ;
-        } else {
-            Log.e(TAG, "onCreate: error database access initializing");
-        }
+        Log.e(TAG, "onCreate: initial creation");
+        setupSharedPreferences();
         mDbHelper = new BookListDbHelper(getContext(), dbName, dbVersion);
         return false;
+    }
+
+    private void setupSharedPreferences(){
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String lan = settings.getString("lan", "");
+
+        if (!lan.equals("")) {
+            Log.e(TAG, "setupSharedPreferences: " + lan);
+            String lanRus = getContext().getString(R.string.lan_rus);
+            String lanKaz = getContext().getString(R.string.lan_kaz);
+            if (lan.compareTo(lanRus) == 0) {
+                Log.e(TAG, "onCreate: lan_prefs=lan_rus");
+                dbName = BookListDbHelper.DATABASE_NAME_RUS;
+                dbVersion = BookListDbHelper.DATABASE_VERSION_RUS;
+            } else if (lan.compareTo(lanKaz) == 0) {
+                Log.e(TAG, "onCreate: lan_prefs=lan_kaz");
+                dbName = BookListDbHelper.DATABASE_NAME_KZ;
+                dbVersion = BookListDbHelper.DATABASE_VERSION_KZ;
+            } else {
+                Log.e(TAG, "onCreate: error database access initializing");
+            }
+        } else {
+            dbName=BookListDbHelper.DATABASE_NAME_RUS;
+            dbVersion=BookListDbHelper.DATABASE_VERSION_RUS;
+        }
+
+    }
+
+
+
+    public void resetDatabase(){
+        Log.e(TAG, "resetDatabase: got here");
+        mDbHelper.close();
+        setupSharedPreferences();
+        mDbHelper= new BookListDbHelper(getContext(), dbName, dbVersion);
     }
 
     public static UriMatcher buildUriMatcher(){
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(BookListContract.AUTHORITY, BookListContract.PATH_BOOK, BOOKS);
-        uriMatcher.addURI(BookListContract.AUTHORITY, BookListContract.PATH_BOOK +"/#", BOOKS);
+        uriMatcher.addURI(BookListContract.AUTHORITY, BookListContract.PATH_BOOK +"/#", BOOK_WITH_ID);
         return uriMatcher;
     }
 
@@ -65,6 +91,7 @@ public class BookListContentProvider extends ContentProvider {
 
         switch(match){
             case BOOKS:
+                Log.e(TAG, "query: cursor without id");
                 returnCursor = db.query(BookListContract.TABLE_NAME,
                         projection,
                         selection,
@@ -75,10 +102,14 @@ public class BookListContentProvider extends ContentProvider {
                 break;
 
             case BOOK_WITH_ID:
+                Log.e(TAG, "query: cursor with id");
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String [] mSelectionArgs = new String[]{id};
                 returnCursor=db.query(BookListContract.TABLE_NAME,
                         projection,
-                        selection,
-                        selectionArgs,
+                        mSelection,
+                        mSelectionArgs,
                         null,
                         null,
                         sortOrder);
@@ -118,13 +149,58 @@ public class BookListContentProvider extends ContentProvider {
         return returnUri;
     }
 
+
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        int match = sUriMatcher.match(uri);
+        int tasksDeleted;
+        switch(match) {
+            case BOOK_WITH_ID:
+                Log.e(TAG, "delete: cursor with id");
+                String id = uri.getPathSegments().get(1);
+                tasksDeleted=db.delete(BookListContract.TABLE_NAME, " _id=?", new String[]{id});
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (tasksDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return tasksDeleted;
+
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        int tasksUpdated;
+        int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case BOOK_WITH_ID:
+                Log.e(TAG, "update: update with id");
+                String id = uri.getPathSegments().get(1);
+                Log.e(TAG, "update: id num = "+id+" table name :"+ BookListContract.TABLE_NAME);
+                tasksUpdated = mDbHelper.getWritableDatabase().update(BookListContract.TABLE_NAME, values, "_id=?", new String[]{id});
+                Log.e(TAG, "update: "+tasksUpdated);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (tasksUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return tasksUpdated;
+
     }
+
+
+
+
+
+
+
 }

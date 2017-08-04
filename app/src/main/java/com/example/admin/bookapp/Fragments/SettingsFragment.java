@@ -1,20 +1,17 @@
 package com.example.admin.bookapp.Fragments;
 
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
+import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.example.admin.bookapp.R;
 
-/**
- * Created by Gaukhar on 8/1/2017.
- */
 
-public class SettingsFragment extends PreferenceFragment {
+
+public class SettingsFragment extends PreferenceFragmentCompat {
+
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
     }
 }

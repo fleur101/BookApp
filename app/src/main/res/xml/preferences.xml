@@ -4,9 +4,12 @@
         android:title="@string/pref_lan_title">
 
     <ListPreference
-        android:key="pref_lan"
+        android:key="lan"
+        android:defaultValue="rus"
         android:title="@string/choose_language_of_the_book"
         android:entries="@array/language"
         android:entryValues="@array/languageAlias"/>
+]
     </PreferenceCategory>
+
 </PreferenceScreen>

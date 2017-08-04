@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.admin.bookapp.data.BookListContract;
-import com.example.admin.bookapp.data.BookListDbHelper;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapterViewHolder> {
 
     private Context mContext;
     private Cursor mCursor;
+    private int bookId;
 
     public BooksAdapter(Context context, Cursor cursor){
         this.mContext = context;
@@ -37,14 +37,20 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapter
         }
         String bookName = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
         String bookAuthor = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
+        bookId=mCursor.getInt(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_ID));
         holder.nameTextView.setText(bookName);
         holder.authorTextView.setText(bookAuthor);
+        holder.itemView.setTag(bookId);
+
+
     }
 
     @Override
     public int getItemCount() {
         return mCursor.getCount();
     }
+
+
 
     public void swapCursor(Cursor newCursor) {
         // Always close the previous mCursor first
@@ -68,5 +74,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapter
         }
 
 
+
     }
+
 }
