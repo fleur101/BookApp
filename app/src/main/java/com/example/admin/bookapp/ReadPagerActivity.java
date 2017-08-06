@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,7 +19,6 @@ import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.admin.bookapp.Fragments.ReadPageFragment;
 import com.example.admin.bookapp.Fragments.WhatBookDialogFragment;
@@ -32,9 +32,12 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
 
 
     private static final String TAG = "READ_PAGER_ACTIVITY_TAG";
-    private ViewPager mPager;
     private CursorPagerAdapter adapter;
     private ProgressBar mLoadingIndicator;
+    private int tvFontSize;
+    private String stringFontSize;
+    private ViewPager mPager;
+
     SharedPreferences.OnSharedPreferenceChangeListener mListener;
 
     @Override
@@ -48,77 +51,97 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         mPager.setAdapter(adapter);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
+
         Log.e(TAG, "onCreate: created");
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            stringFontSize = sharedPreferences.getString("font_size", "20");
+            tvFontSize=Integer.valueOf(stringFontSize);
+            Log.e(TAG, "onCreate: tv font size" + tvFontSize);
+        } catch (Exception ex) {
+            Log.e(TAG, "onCreate: tv font size exception");
+            ex.printStackTrace();
+        }
+        setListener();
         getLoaderManager().initLoader(0, null, this);
+
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.e(TAG, "onStart: "+sharedPreferences.getString("lan", ""));
+    }
 
+    public void setListener(){
         mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
 
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Toast.makeText(ReadPagerActivity.this, "Preference Changed", Toast.LENGTH_SHORT).show();
-                if (key.equals("lan")) {
-                    Log.e(TAG, "onSharedPreferenceChanged: key is lan");
-                    ContentResolver resolver = getApplicationContext().getContentResolver();
-                    ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
-                    BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
-                    contentProvider.resetDatabase();
-                } else {
-                    Log.e(TAG, "key is not lan");
-                }
-            }
-        };
-        sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
+                switch (key) {
+                    case "lan":
+                        Log.e(TAG, "onSharedPreferenceChanged: key is lan");
 
+                        ContentResolver resolver = getApplicationContext().getContentResolver();
+                        ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
+                        BookListContentProvider contentProvider = null;
+                        if (client != null)
+                            contentProvider = (BookListContentProvider) client.getLocalContentProvider();
+                        if (contentProvider != null) contentProvider.resetDatabase();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            if (client != null) client.close();
+                        }
+
+                        break;
+                    case "font_size":
+                        Log.e(TAG, "onSharedPreferenceChanged: key is font_size");
+                        try {
+                            stringFontSize = sharedPreferences.getString(key, "20");
+                            tvFontSize=Integer.valueOf(stringFontSize);
+                            Log.e(TAG, "onSharedPreferenceChanged: fontSizePref" + tvFontSize);
+                            break;
+                        } catch (Exception ex) {
+                            Log.e(TAG, "onSharedPreferenceChanged: font_size_pref exception");
+                            ex.printStackTrace();
+                        }
+                        break;
+                    default:
+                        Log.e(TAG, "key is not recognized");
+                        break;
+                }
+                }
+
+        };
     }
 
 
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
+      //  if (mPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
+//        } else {
+//            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume: resumed");
+       // Log.e(TAG, "onResume: resumed");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.e(TAG, "onResume: "+sharedPreferences.getString("lan", ""));
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener);
         getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+      //  setListener();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        mListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Toast.makeText(ReadPagerActivity.this, "Preference Changed", Toast.LENGTH_SHORT).show();
-                if (key.equals("lan")) {
-                    Log.e(TAG, "onSharedPreferenceChanged: key is lan");
-                    ContentResolver resolver = getApplicationContext().getContentResolver();
-                    ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
-                    BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
-                    contentProvider.resetDatabase();
-                } else {
-                    Log.e(TAG, "key is not lan");
-                }
-            }
-        };
+        Log.e(TAG, "onPause: "+sharedPreferences.getString("lan", ""));
         sharedPreferences.registerOnSharedPreferenceChangeListener(mListener);
-        Log.e(TAG, "onPause: paused");
 
     }
 
@@ -133,7 +156,7 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         Uri contentUri = ContentUris.withAppendedId(BookListContract.CONTENT_URI, id);
         ContentValues cv = new ContentValues();
         cv.put(BookListContract.COLUMN_IN_MY_LIST, "Да");
-        int added = getContentResolver().update(contentUri, cv, null, null);
+        getContentResolver().update(contentUri, cv, null, null);
 
     }
 
@@ -186,9 +209,11 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
             if (mCursor!=null && mCursor.moveToPosition(position)){
                 Bundle args = new Bundle();
                 args.putInt(ReadPageFragment.ARG_ITEM_ID, mCursor.getInt(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_ID)));
+                args.putInt("fontSize", tvFontSize);
+                Log.e(TAG, "getItem: font size"+tvFontSize);
                 ReadPageFragment fragment = new ReadPageFragment();
                 fragment.setArguments(args);
-                Log.e(TAG, "getItem: return new nonempty page fragment");
+             //   Log.e(TAG, "getItem: return new nonempty page fragment");
                 return fragment;
             } else {
                 Log.e(TAG, "getItem: return new empty page fragment");
@@ -213,8 +238,8 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        sharedPreferences.unregisterOnSharedPreferenceChangeListener(mListener);
 
 
     }

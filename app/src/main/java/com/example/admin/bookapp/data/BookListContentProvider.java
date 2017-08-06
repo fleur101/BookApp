@@ -36,7 +36,7 @@ public class BookListContentProvider extends ContentProvider {
         Log.e(TAG, "onCreate: initial creation");
         setupSharedPreferences();
         mDbHelper = new BookListDbHelper(getContext(), dbName, dbVersion);
-        return false;
+        return true;
     }
 
     private void setupSharedPreferences(){

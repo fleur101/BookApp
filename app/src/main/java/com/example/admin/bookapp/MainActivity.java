@@ -37,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
         mRusButton = (Button) findViewById(R.id.btn_rus);
         mKazButton = (Button) findViewById(R.id.btn_kaz);
         Log.e(TAG, "onCreate: created ");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean previouslyStarted = prefs.getBoolean("prev_started", false);
+        if(!previouslyStarted) {
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("prev_started", Boolean.TRUE);
+            edit.commit();
+        }
+
     }
 
     public void butLanClick(View view){
@@ -52,13 +60,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         Log.e(TAG, "butLanClick: "+ value);
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putString("lan", value);
-        editor.apply();
-        ContentResolver resolver = getApplicationContext().getContentResolver();
-        ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
-        BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
-        contentProvider.resetDatabase();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String lan_pref = sharedPreferences.getString("lan", "");
+        if (lan_pref.compareTo(value)!=0) {
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+            editor.putString("lan", value);
+            editor.apply();
+            ContentResolver resolver = getApplicationContext().getContentResolver();
+            ContentProviderClient client = resolver.acquireContentProviderClient(BookListContract.CONTENT_URI);
+            BookListContentProvider contentProvider = (BookListContentProvider) client.getLocalContentProvider();
+            contentProvider.resetDatabase();
+        }
 
         Intent intent = new Intent(this, ReadPagerActivity.class);
         startActivity(intent);

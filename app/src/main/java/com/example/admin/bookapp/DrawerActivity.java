@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,9 +19,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class DrawerActivity extends AppCompatActivity {
 
+    private static final String TAG ="MAIN_ACTIVITY_TAG";
     private ListView mDrawerList;
 
 
@@ -28,6 +31,8 @@ public class DrawerActivity extends AppCompatActivity {
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     private String[] drawerListItems;
+    boolean doubleBackToExitPressedOnce = false;
+
 
 
     @Override
@@ -66,15 +71,12 @@ public class DrawerActivity extends AppCompatActivity {
         mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.activity_drawer_list_item, drawerListItems));
         mDrawerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-//        CharSequence mDrawerTitle;
-//        CharSequence mTitle = mDrawerTitle = getTitle();
-
 
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        if (getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar()!=null)getSupportActionBar().setHomeButtonEnabled(true);
 
         }
 
@@ -106,7 +108,21 @@ public class DrawerActivity extends AppCompatActivity {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce || getFragmentManager().getBackStackEntryCount()!=0) {
+                moveTaskToBack(true);
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Нажмите еще раз 'Назад', чтобы выйти", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 3000);
         }
     }
 
@@ -134,7 +150,6 @@ public class DrawerActivity extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItem(position);
-
         }
 
 
@@ -142,24 +157,31 @@ public class DrawerActivity extends AppCompatActivity {
 
     private void selectItem(int position){
 
-        Intent intent = null;
+        Intent intent ;
         switch(position){
             case 1:
+                Log.e(TAG, "selectItem: 1");
                 intent = new Intent(this, ReadPagerActivity.class);
                 break;
             case 2:
+                Log.e(TAG, "selectItem: 2");
                 intent = new Intent(this, MyListActivity.class);
                 break;
             case 3:
+                Log.e(TAG, "selectItem: 3");
                 intent = new Intent(this, SettingsActivity.class);
                 break;
-            default:
-                intent = new Intent (this, MyListActivity.class);
+            case 4:
+                Log.e(TAG, "selectItem: 4");
+                intent = new Intent(this, AboutAppActivity.class);
                 break;
-
+            default:
+                Log.e(TAG, "selectItem: 5");
+                intent = new Intent (this, ReadPagerActivity.class);
+                break;
         }
         mDrawerList.setItemChecked(position, true);
-        getSupportActionBar().setTitle(drawerListItems[position]);
+        if (getSupportActionBar()!=null && (position == 1 || position == 2 || position == 3 || position ==4))getSupportActionBar().setTitle(drawerListItems[position-1]);
         startActivity(intent);
         mDrawerLayout.closeDrawer(mDrawerList);
     }

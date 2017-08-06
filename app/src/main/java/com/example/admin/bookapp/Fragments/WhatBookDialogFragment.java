@@ -33,7 +33,6 @@ public class WhatBookDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         mListener.onDialogPositiveClick(bookId);
-
                         dialog.dismiss();
                     }
                 })

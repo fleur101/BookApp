@@ -16,24 +16,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ReadPagerActivity"
-            android:label="activity_read_pager">
-        </activity>
-
+            android:label="activity_read_pager"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".MyListActivity"
-            android:parentActivityName=".ReadPagerActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:parentActivityName=".ReadPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ReadPagerActivity" />
         </activity>
-
         <activity
             android:name=".SettingsActivity"
-            android:label="activity_settings"/>
+            android:label="activity_settings"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ReadPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ReadPagerActivity" />
+        </activity>
         <activity android:name=".DrawerActivity" />
 
         <provider
@@ -41,6 +44,13 @@
             android:authorities="com.example.admin.bookapp"
             android:exported="false" />
 
+        <activity android:name=".AboutAppActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ReadPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ReadPagerActivity" />
+        </activity>/>
     </application>
 
 </manifest>

@@ -8,4 +8,14 @@
         <item>rus</item>
         <item>kaz</item>
     </string-array>
+    <string-array name="font_sizes">
+        <item>Мелкий</item>
+        <item>Средний</item>
+        <item>Крупный</item>
+    </string-array>
+    <string-array name="font_size_keys">
+        <item>16</item>
+        <item>20</item>
+        <item>24</item>
+    </string-array>
 </resources>

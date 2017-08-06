@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,9 @@ public class ReadPageFragment extends Fragment {
 
 
     public static final String ARG_ITEM_ID = "item_id";
+    private static final String TAG = "READ_PAGE_FRAGMENT_TAG";
     private int id;
+    private int fontSize;
 
     public static final String READ_PAGE_FRAGMENT_TAG="READ_PAGE_FRAGMENT_TAG";
     private int bookId;
@@ -50,12 +53,14 @@ public class ReadPageFragment extends Fragment {
         if (getArguments()!=null) {
             if (getArguments().containsKey(ARG_ITEM_ID)) {
                 id = getArguments().getInt(ARG_ITEM_ID);
-                Log.e(READ_PAGE_FRAGMENT_TAG, "onCreate: got id" +id);
+                fontSize = getArguments().getInt("fontSize");
+                Log.e(READ_PAGE_FRAGMENT_TAG, "onCreate: got id and font size" +id+ " "+ fontSize);
             }
         } else{
             Log.e(READ_PAGE_FRAGMENT_TAG, "onCreate: no args got in fragment" );
         }
         setRetainInstance(true);
+
     }
 
     @Override
@@ -64,8 +69,9 @@ public class ReadPageFragment extends Fragment {
         TextView mBookPageNumTextView = (TextView) view.findViewById(R.id.tv_book_page_num);
         ScrollView mBookPageScrollView = (ScrollView) view.findViewById(R.id.sv_book_contents);
         TextView mBookPageTextView = (TextView) view.findViewById(R.id.tv_book_contents);
+        mBookPageTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
         Button mWhatBookButton = (Button) view.findViewById(R.id.btn_what_book);
-
+        //tv.setTextSize((getActivity().);
         if (id >= 0){
             Uri contentUri = ContentUris.withAppendedId(BookListContract.CONTENT_URI, id);
             Cursor cursor = getActivity().getContentResolver().query(contentUri, null, null, null, null);
@@ -76,7 +82,7 @@ public class ReadPageFragment extends Fragment {
                 bookName = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
                 bookPage = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_PAGE));
                 Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: book details: "+ bookId+ bookName+bookAuthor);
-
+                Log.e(TAG, "onCreateView: TEXT SIZE " + mBookPageTextView.getTextSize());
                 mBookPageNumTextView.setText(getString(R.string.excerpt) + bookId);
                 mBookPageTextView.setText(bookPage);
                 mWhatBookButton.setOnClickListener(new View.OnClickListener() {
@@ -96,27 +102,18 @@ public class ReadPageFragment extends Fragment {
 
     }
 
+//    public void changeTextSize(int themeId){
+//        TextView tv = new TextView (getContext());
+//        tv.setTextSize(themeId);
+//    }
+
     @Override
     public void onStart() {
         super.onStart();
-
-      //  Log.e(READ_PAGE_FRAGMENT_TAG, "onStart: before get book page ");
-//        Cursor cursor = DatabaseAccess.getBookPage();
-//        cursor.moveToFirst();
-//        Log.e(READ_PAGE_FRAGMENT_TAG, cursor.getColumnName(0) + " " +
-//        cursor.getColumnName(1));
-
     }
 
     @Override
     public void onDestroy() {
-//        Cursor cursor = DatabaseAccess.getAllBooks();
-//
-//        while (cursor.moveToNext()){
-//            DatabaseAccess.updatePageNotShown();
-//        }
-//        cursor.close();
-
         super.onDestroy();
     }
 

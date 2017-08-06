@@ -11,5 +11,16 @@
         android:entryValues="@array/languageAlias"/>
 ]
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Шрифт">
+
+        <ListPreference
+            android:key="font_size"
+            android:defaultValue="Medium"
+            android:title="Выберите размер текста"
+            android:entries="@array/font_sizes"
+            android:entryValues="@array/font_size_keys"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
