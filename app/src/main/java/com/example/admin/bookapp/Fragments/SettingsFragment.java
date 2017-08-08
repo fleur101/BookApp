@@ -2,11 +2,12 @@ package com.example.admin.bookapp.Fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
+import android.util.Log;
 
 import com.example.admin.bookapp.R;
 
@@ -15,6 +16,8 @@ import com.example.admin.bookapp.R;
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
 
+    private static final String TAG = "SETTINGS_FRAGMENT_TAG";
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
@@ -22,13 +25,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         PreferenceScreen preferenceScreen = getPreferenceScreen();
         int count = preferenceScreen.getPreferenceCount();
-
+        Log.e(TAG, "onCreatePreferences: got here "+count);
         for (int i=0; i<count; i++){
             Preference p = preferenceScreen.getPreference(i);
-            if (!(p instanceof CheckBoxPreference)){
-                String value = sharedPreferences.getString(p.getKey(), "");
-                setPreferenceSummary(p, value);
-            }
+           if (p instanceof PreferenceCategory){
+               PreferenceCategory pcat = (PreferenceCategory)p;
+               int pcount = pcat.getPreferenceCount();
+               for (int j=0; j<pcount; j++){
+                   Preference pref = pcat.getPreference(j);
+                   if (pref instanceof ListPreference) {
+                        String value = sharedPreferences.getString(pref.getKey(), "");
+                        setPreferenceSummary(pref, value);
+                   }
+               }
+           }
         }
     }
 
@@ -41,8 +51,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         Preference preference = findPreference(key);
         if (null != preference) {
             if (preference instanceof ListPreference) {
+                Log.e(TAG, "onSharedPreferenceChanged: got here");
                 String value = sharedPreferences.getString(preference.getKey(), "");
                 setPreferenceSummary(preference, value);
+                Log.e(TAG, "onSharedPreferenceChanged: " + value);
             }
         }
     }
@@ -56,6 +68,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
             int prefIndex = listPreference.findIndexOfValue(value);
             if (prefIndex >= 0) {
                 listPreference.setSummary(listPreference.getEntries()[prefIndex]);
+                Log.e(TAG, "setPreferenceSummary: pref index" +prefIndex);
             }
         }
     }
@@ -65,28 +78,26 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getPreferenceScreen().getSharedPreferences()
-//                .registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        getPreferenceScreen().getSharedPreferences()
-//                .unregisterOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

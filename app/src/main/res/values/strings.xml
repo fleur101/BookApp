@@ -5,7 +5,7 @@
     <string name="btn_rus">рус</string>
     <string name="btn_kaz">каз</string>
     <string name="error_message">Произошла ошибка</string>
-    <string name="choose_language_of_the_book">Выберите язык книги</string>
+    <string name="choose_language_of_the_book">Выбери язык книги</string>
 
     <string name="add_list">Добавить в список</string>
     <string name="cancel">Отмена</string>
@@ -13,9 +13,6 @@
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer closed</string>
     <string name="my_list">Мои книги</string>
-    <string name="add_book">Добавить книгу</string>
-    <string name="add_book_name">Введите название книги</string>
-    <string name="add_book_author">Введите имя автора</string>
     <string name="profile_name">Эврика!</string>
     <string name="cancel_btn">Отмена</string>
     <string name="bookcoaster">Отрывки</string>
@@ -29,6 +26,6 @@
     <string name="pref_lan_title">Язык</string>
     <string name="eureka">Отрывки</string>
     <string name="pref_font_size_title">Шрифт</string>
-    <string name="pref_choose_font_size">Выберите шрифт текста</string>
+    <string name="pref_choose_font_size">Выбери шрифт текста</string>
     <string name="tv_no_books">Вы пока не добавили в список ни одну книгу</string>
 </resources>

@@ -12,7 +12,7 @@
         android:entries="@array/language"
         android:entryValues="@array/languageAlias"
         />
-]
+
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_font_size_title"
@@ -20,11 +20,11 @@
 
         <ListPreference
             android:key="font_size"
-            android:defaultValue="Medium"
+            android:defaultValue="18"
             android:title="@string/pref_choose_font_size"
             android:entries="@array/font_sizes"
             android:entryValues="@array/font_size_keys"
-        />
+            />
 
     </PreferenceCategory>
 

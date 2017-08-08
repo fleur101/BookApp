@@ -56,10 +56,18 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         MyBookListDbHelper mDbHelper = new MyBookListDbHelper(this);
         mDb = mDbHelper.getWritableDatabase();
-
+        setupSharedPreferences();
         Log.e(TAG, "onCreate: created");
+
+        setListener();
+        getLoaderManager().initLoader(0, null, this);
+
+    }
+
+    private void setupSharedPreferences() {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
             stringFontSize = sharedPreferences.getString("font_size", "18");
             tvFontSize=Integer.valueOf(stringFontSize);
             Log.e(TAG, "onCreate: tv font size" + tvFontSize);
@@ -67,9 +75,6 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
             Log.e(TAG, "onCreate: tv font size exception");
             ex.printStackTrace();
         }
-        setListener();
-        getLoaderManager().initLoader(0, null, this);
-
     }
 
 
@@ -211,7 +216,6 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
-
 
 
     private class CursorPagerAdapter extends FragmentStatePagerAdapter {
