@@ -31,12 +31,13 @@
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="@color/colorText"
                 android:layout_marginBottom="5dp"/>
             <TextView
                 android:id="@+id/tv_book_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:textColor="@color/colorText"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:textSize="18sp"/>

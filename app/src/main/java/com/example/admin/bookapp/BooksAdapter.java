@@ -3,18 +3,20 @@ package com.example.admin.bookapp;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.admin.bookapp.data.BookListContract;
+import com.example.admin.bookapp.data.MyBookListContract;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapterViewHolder> {
 
+    private static final String TAG = "BOOKS_ADAPTER_TAG";
     private Context mContext;
     private Cursor mCursor;
-    private int bookId;
+
 
     public BooksAdapter(Context context, Cursor cursor){
         this.mContext = context;
@@ -35,13 +37,18 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.BooksAdapter
         if (!mCursor.moveToPosition(position)){
             return;
         }
-        String bookName = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
-        String bookAuthor = mCursor.getString(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
-        bookId=mCursor.getInt(mCursor.getColumnIndex(BookListContract.COLUMN_BOOK_ID));
+        Log.e(TAG, "onBindViewHolder:not returned");
+        String bookName = mCursor.getString(mCursor.getColumnIndex(MyBookListContract.MyBookListItem.COLUMN_BOOK_NAME));
+        String bookAuthor = mCursor.getString(mCursor.getColumnIndex(MyBookListContract.MyBookListItem.COLUMN_BOOK_AUTHOR));
+        long bookId=0;
+        try{
+            bookId=mCursor.getLong(mCursor.getColumnIndex(MyBookListContract.MyBookListItem._ID));
+        } catch (Exception e){
+            Log.e(TAG, "onBindViewHolder: for some dumb readon cannot return bookid");
+        }
         holder.nameTextView.setText(bookName);
         holder.authorTextView.setText(bookAuthor);
         holder.itemView.setTag(bookId);
-
 
     }
 

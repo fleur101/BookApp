@@ -38,12 +38,10 @@ public class DrawerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        drawerListItems = new String[]{getString(R.string.eureka), getString(R.string.my_list), getString(R.string.settings), getString(R.string.about_app)};
-
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
         setSupportActionBar(toolbar);
-
+        drawerListItems = new String[]{getString(R.string.eureka), getString(R.string.my_list), getString(R.string.settings), getString(R.string.about_app)};
          mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
          mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
@@ -58,7 +56,7 @@ public class DrawerActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            mDrawerLayout.setStatusBarBackgroundColor(getColor(R.color.colorPrimaryDark));
+            mDrawerLayout.setStatusBarBackgroundColor(getColor(R.color.colorPrimary));
         }
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mContentFrame = (FrameLayout) findViewById(R.id.content_frame);

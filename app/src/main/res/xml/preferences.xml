@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-        android:title="@string/pref_lan_title">
+        android:title="@string/pref_lan_title"
+        >
+
 
     <ListPreference
         android:key="lan"
         android:defaultValue="rus"
         android:title="@string/choose_language_of_the_book"
         android:entries="@array/language"
-        android:entryValues="@array/languageAlias"/>
+        android:entryValues="@array/languageAlias"
+        />
 ]
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Шрифт">
+        android:title="@string/pref_font_size_title"
+        >
 
         <ListPreference
             android:key="font_size"
             android:defaultValue="Medium"
-            android:title="Выберите размер текста"
+            android:title="@string/pref_choose_font_size"
             android:entries="@array/font_sizes"
-            android:entryValues="@array/font_size_keys"/>
+            android:entryValues="@array/font_size_keys"
+        />
 
     </PreferenceCategory>
 

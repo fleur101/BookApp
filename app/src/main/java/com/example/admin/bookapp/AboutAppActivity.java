@@ -6,21 +6,22 @@ import android.widget.TextView;
 
 public class AboutAppActivity extends DrawerActivity {
 
-    private ImageView mImageView;
-    private TextView mTextView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_about_app, mContentFrame);
         setTitle("О приложении");
-        mImageView = (ImageView)findViewById(R.id.iv_app_icon);
-        mTextView = (TextView) findViewById(R.id.tv_about_app);
-        mTextView.setText("Эврика - приложение, которое поможет Вам выбрать, что почитать. Приложение не является стандартным " +
-                "рекомендательным сервисом и здесь не нужно заполнять многочисленные списки для того, чтобы выбрать интересную книгу для чтения. " +
-                "Вы просто начинаете читать случайно выпавший отрывок, не зная ни названия произведения, ни его автора, и основывайте " +
-                "свой выбор на прочитанном фрагменте. \n\n"+
-                "Внимание! Это приложение не является электронной библиотекой и предназначено только для того, чтобы помочь Вам найти" +
-                " то, что Вы давно искали :)");
+        ImageView mImageView = (ImageView) findViewById(R.id.iv_app_icon);
+        TextView mAboutAppTextView = (TextView) findViewById(R.id.tv_about_app);
+        TextView mAboutAppIntroTextView = (TextView) findViewById(R.id.tv_about_app_intro);
+        TextView mAboutAppNoteTextView = (TextView) findViewById(R.id.tv_about_app_note);
+        TextView mAppNameTextView = (TextView) findViewById(R.id.tv_app_name);
+        TextView mAppAuthorTextVew = (TextView) findViewById(R.id.app_author_name);
+        mAppNameTextView.setText("Эврика!");
+        mAboutAppIntroTextView.setText("Эврика - приложение, которое поможет Вам выбрать, что почитать. \n");
+        mAboutAppTextView.setText("Вы начинаете читать случайно выпавший отрывок, не зная ни названия произведения, ни его автора, и основываете свой выбор только на прочитанном фрагменте. \n\n");
+        mAboutAppNoteTextView.setText("Внимание! Это приложение не является электронной библиотекой и предназначено только для того, чтобы помочь Вам найти то, что Вы давно искали :)");
+        mAppAuthorTextVew.setText("Gaukhar Dauzhan\ngaukhard96@gmail.com");
+
     }
 }

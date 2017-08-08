@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.example.admin.bookapp.Fragments.ReadPageFragment;
 import com.example.admin.bookapp.Fragments.WhatBookDialogFragment;
 import com.example.admin.bookapp.data.BookListContentProvider;
 import com.example.admin.bookapp.data.BookListContract;
+import com.example.admin.bookapp.data.MyBookListContract;
+import com.example.admin.bookapp.data.MyBookListDbHelper;
 
 import static com.example.admin.bookapp.Fragments.WhatBookDialogFragment.NoticeDialogListener;
 
@@ -37,6 +40,7 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
     private int tvFontSize;
     private String stringFontSize;
     private ViewPager mPager;
+    private SQLiteDatabase mDb;
 
     SharedPreferences.OnSharedPreferenceChangeListener mListener;
 
@@ -50,12 +54,13 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
         adapter = new CursorPagerAdapter(getSupportFragmentManager(), null);
         mPager.setAdapter(adapter);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
+        MyBookListDbHelper mDbHelper = new MyBookListDbHelper(this);
+        mDb = mDbHelper.getWritableDatabase();
 
         Log.e(TAG, "onCreate: created");
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            stringFontSize = sharedPreferences.getString("font_size", "20");
+            stringFontSize = sharedPreferences.getString("font_size", "18");
             tvFontSize=Integer.valueOf(stringFontSize);
             Log.e(TAG, "onCreate: tv font size" + tvFontSize);
         } catch (Exception ex) {
@@ -96,7 +101,7 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
                     case "font_size":
                         Log.e(TAG, "onSharedPreferenceChanged: key is font_size");
                         try {
-                            stringFontSize = sharedPreferences.getString(key, "20");
+                            stringFontSize = sharedPreferences.getString(key, "18");
                             tvFontSize=Integer.valueOf(stringFontSize);
                             Log.e(TAG, "onSharedPreferenceChanged: fontSizePref" + tvFontSize);
                             break;
@@ -153,10 +158,23 @@ public class ReadPagerActivity extends DrawerActivity implements NoticeDialogLis
 
     @Override
     public void onDialogPositiveClick(int id) {
+        String bookName = null; String bookAuthor = null;
         Uri contentUri = ContentUris.withAppendedId(BookListContract.CONTENT_URI, id);
+//        ContentValues cv = new ContentValues();
+//        cv.put(BookListContract.COLUMN_IN_MY_LIST, "1");
+//        getContentResolver().update(contentUri, cv, null, null);
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor.moveToNext()) {
+            bookAuthor = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
+            bookName = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
+        }
+        cursor.close();
+
+
         ContentValues cv = new ContentValues();
-        cv.put(BookListContract.COLUMN_IN_MY_LIST, "Да");
-        getContentResolver().update(contentUri, cv, null, null);
+        cv.put(MyBookListContract.MyBookListItem.COLUMN_BOOK_NAME, bookName);
+        cv.put(MyBookListContract.MyBookListItem.COLUMN_BOOK_AUTHOR, bookAuthor);
+        mDb.insert(MyBookListContract.MyBookListItem.TABLE_NAME, null, cv);
 
     }
 

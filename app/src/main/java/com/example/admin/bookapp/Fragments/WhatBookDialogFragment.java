@@ -25,10 +25,11 @@ public class WhatBookDialogFragment extends DialogFragment {
         final String[] args = getArguments().getStringArray("book details");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final int bookId = Integer.parseInt(args[0]);
-        String bookName = args[1];
-        String bookAuthor = args[2];
+        final String bookName = args[1];
+        final String bookAuthor = args[2];
 
-        builder.setMessage(bookName+"\n"+bookAuthor)
+
+        builder.setMessage(bookAuthor+"\n"+'"'+bookName+'"')
                 .setPositiveButton(R.string.add_list, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int i) {

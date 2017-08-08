@@ -17,6 +17,5 @@ public class BookListContract {
     public static final String COLUMN_BOOK_NAME="bookName";
     public static final String COLUMN_BOOK_AUTHOR="bookAuthor";
     public static final String COLUMN_BOOK_PAGE="bookPage";
-    public static final String COLUMN_ALREADY_SHOWN="bookShown";
     public static final String COLUMN_IN_MY_LIST="bookInList";
 }

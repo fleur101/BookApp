@@ -40,7 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         Preference preference = findPreference(key);
         if (null != preference) {
-            if (!(preference instanceof CheckBoxPreference)) {
+            if (preference instanceof ListPreference) {
                 String value = sharedPreferences.getString(preference.getKey(), "");
                 setPreferenceSummary(preference, value);
             }
@@ -65,16 +65,28 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getPreferenceScreen().getSharedPreferences()
+//                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getPreferenceScreen().getSharedPreferences()
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        getPreferenceScreen().getSharedPreferences()
-                .unregisterOnSharedPreferenceChangeListener(this);
+//        getPreferenceScreen().getSharedPreferences()
+//                .unregisterOnSharedPreferenceChangeListener(this);
     }
 }

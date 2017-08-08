@@ -78,8 +78,8 @@ public class ReadPageFragment extends Fragment {
 
             if (cursor.moveToNext()) {
                 bookId = cursor.getInt(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_ID));
-                bookAuthor = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
-                bookName = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
+                bookAuthor = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_AUTHOR));
+                bookName = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_NAME));
                 bookPage = cursor.getString(cursor.getColumnIndex(BookListContract.COLUMN_BOOK_PAGE));
                 Log.e(READ_PAGE_FRAGMENT_TAG, "onCreateView: book details: "+ bookId+ bookName+bookAuthor);
                 Log.e(TAG, "onCreateView: TEXT SIZE " + mBookPageTextView.getTextSize());
