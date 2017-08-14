@@ -8,7 +8,7 @@
     <ListPreference
         android:key="lan"
         android:defaultValue="rus"
-        android:title="@string/choose_language_of_the_book"
+        android:title="@string/pref_choose_book_lan"
         android:entries="@array/language"
         android:entryValues="@array/languageAlias"
         />
