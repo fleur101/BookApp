@@ -1,5 +1,6 @@
 package com.gaukhar.dauzhan.bookapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,7 +21,9 @@ public class MyListActivity extends DrawerActivity {
     private SQLiteDatabase mDb;
     private BooksAdapter mAdapter;
     private TextView mNoBooksTextView;
+    private TextView mSearchBooksTextView;
     private long id;
+    private int numMyBooks;
 
 
     @Override
@@ -34,11 +37,23 @@ public class MyListActivity extends DrawerActivity {
         MyBookListDbHelper dbHelper =  new MyBookListDbHelper(this);
         mDb = dbHelper.getReadableDatabase();
         mNoBooksTextView = (TextView) findViewById(R.id.tv_no_books_yet);
+        mSearchBooksTextView = (TextView) findViewById(R.id.tv_search_books);
         Cursor cursor = getBooksInMyList();
+        numMyBooks = cursor.getCount();
         Log.e(TAG, "onCreate: got cursor");
+        mNoBooksTextView.setText(R.string.tv_no_books);
+        mSearchBooksTextView.setText(R.string.tab_here);
+
         if (cursor.getCount() == 0) {
-            mNoBooksTextView.setText(R.string.tv_no_books);
             mNoBooksTextView.setVisibility(View.VISIBLE);
+            mSearchBooksTextView.setVisibility(View.VISIBLE);
+            mSearchBooksTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ReadActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
         mAdapter = new BooksAdapter(this, cursor, this);
         mListRecyclerView.setAdapter(mAdapter);
@@ -57,6 +72,18 @@ public class MyListActivity extends DrawerActivity {
                 long id = (long)viewHolder.itemView.getTag();
                 removeBook(id);
                 mAdapter.swapCursor(getBooksInMyList());
+                numMyBooks--;
+                if (numMyBooks==0){
+                    mNoBooksTextView.setVisibility(View.VISIBLE);
+                    mSearchBooksTextView.setVisibility(View.VISIBLE);
+                    mSearchBooksTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(v.getContext(), ReadActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
 
 

@@ -1,27 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!--<group android:checkableBehavior="single">-->
-    <!--<item-->
-        <!--android:id="@+id/bookcoaster"-->
-        <!--android:checked="true"-->
-        <!--android:icon="@mipmap/ic_launcher"-->
-        <!--android:title="@string/bookcoaster"/>-->
-    <!--<item-->
-        <!--android:id="@+id/my_books"-->
-        <!--android:checked="true"-->
-        <!--android:icon="@mipmap/ic_launcher"-->
-        <!--android:title="Мой лист"/>-->
-    <!--<item-->
-        <!--android:id="@+id/settings"-->
-        <!--android:checked="true"-->
-        <!--android:title="Настройки"/>-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/bookcoaster"
+            android:icon="@drawable/book_open_page_variant"
+            android:title="@string/bookcoaster"
+            android:checked="true"/>
+        <item
+            android:id="@+id/my_books"
+            android:icon="@drawable/star"
+            android:title="@string/my_list"/>
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings"
+            android:title="@string/settings"/>
 
-    <!--<item-->
-        <!--android:id="@+id/nav_share"-->
-        <!--android:title="Поделиться" />-->
-    <!--<item-->
-        <!--android:id="@+id/contact"-->
-        <!--android:checked="true"-->
-        <!--android:title="Написать разработчику"/>-->
-    <!--</group>-->
+        <item
+            android:id="@+id/about_app"
+            android:icon="@drawable/information_outline"
+            android:title="@string/about_app"/>
+    </group>
 </menu>

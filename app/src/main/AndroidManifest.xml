@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gaukhar.dauzhan.bookapp">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/my_backup_rules"
@@ -12,12 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".IntroActivity"
+        <activity
+            android:name=".intro_slides.IntroActivity"
             android:label="Intro">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN"/> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -27,43 +31,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReadPagerActivity"
-            android:label="activity_read_pager"
+            android:name=".ReadActivity"
+            android:label="activity_read"
             android:launchMode="singleTop" />
         <activity
             android:name=".MyListActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ReadPagerActivity">
+            android:parentActivityName=".ReadActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gaukhar.dauzhan.bookapp.ReadPagerActivity" />
+                android:value="com.gaukhar.dauzhan.bookapp.ReadActivity" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="activity_settings"
             android:launchMode="singleTop"
-            android:parentActivityName=".ReadPagerActivity">
+            android:parentActivityName=".ReadActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gaukhar.dauzhan.bookapp.ReadPagerActivity" />
+                android:value="com.gaukhar.dauzhan.bookapp.ReadActivity" />
         </activity>
         <activity android:name=".DrawerActivity" />
-
-        <provider
-            android:name=".data.BookListContentProvider"
-            android:authorities="com.gaukhar.dauzhan.bookapp"
-            android:exported="false" />
-
         <activity
             android:name=".AboutAppActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ReadPagerActivity">
+            android:parentActivityName=".ReadActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.gaukhar.dauzhan.bookapp.ReadPagerActivity" />
+                android:value="com.gaukhar.dauzhan.bookapp.ReadActivity" />
         </activity>
         />
-
+        <activity android:name=".Fragments.QuizActivity"></activity>
     </application>
 
 </manifest>

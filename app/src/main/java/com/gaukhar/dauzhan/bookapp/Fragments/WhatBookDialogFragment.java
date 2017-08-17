@@ -14,7 +14,7 @@ import com.gaukhar.dauzhan.bookapp.R;
 public class WhatBookDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener{
-         void onDialogPositiveClick(int id);
+         void onDialogPositiveClick(int id, String bookName, String bookAuthor);
     }
 
     NoticeDialogListener mListener ;
@@ -33,7 +33,7 @@ public class WhatBookDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.add_list, new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        mListener.onDialogPositiveClick(bookId);
+                        mListener.onDialogPositiveClick(bookId, bookName, bookAuthor);
                         dialog.dismiss();
                     }
                 })

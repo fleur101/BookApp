@@ -1,4 +1,4 @@
-package com.gaukhar.dauzhan.bookapp;
+package com.gaukhar.dauzhan.bookapp.intro_slides;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.gaukhar.dauzhan.bookapp.MainActivity;
+import com.gaukhar.dauzhan.bookapp.PrefManager;
+import com.gaukhar.dauzhan.bookapp.R;
 
 public class IntroActivity extends AppCompatActivity {
 

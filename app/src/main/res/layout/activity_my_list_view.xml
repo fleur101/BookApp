@@ -4,59 +4,39 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:weightSum="1">
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:paddingTop="10dp"-->
-        <!--android:paddingLeft="15dp"-->
-        <!--android:paddingRight="15dp">-->
-
-        <!--<EditText-->
-            <!--android:id="@+id/et_custom_book_name"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:inputType="text"-->
-            <!--android:hint="@string/add_book_name"-->
-            <!--android:textSize="12sp"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:gravity="center"-->
-            <!--/>-->
-        <!--<EditText-->
-            <!--android:id="@+id/et_custom_author_name"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:inputType="text"-->
-            <!--android:hint="@string/add_book_author"-->
-            <!--android:textSize="12sp"-->
-            <!--android:layout_gravity="end"-->
-            <!--android:gravity="center"/>-->
-    <!--</LinearLayout>-->
-    <!--<Button-->
-        <!--android:id="@+id/btn_add_guest"-->
-        <!--android:layout_gravity="end"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="30dp"-->
-        <!--android:text="@string/add_book"-->
-        <!--android:onClick="addToBookList"-->
-        <!--android:textSize="12sp"/>-->
-    <TextView
-        android:id="@+id/tv_no_books_yet"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textColor="@color/colorDarkGray"
-        android:textAlignment="center"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:layout_margin="10dp"/>
+       >
+        <TextView
+            android:id="@+id/tv_no_books_yet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:textColor="@color/colorDarkGray"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_search_books"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="@color/colorDarkGray"
+            android:visibility="gone"
+            />
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_books_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:padding="10dp"
         />
 </LinearLayout>

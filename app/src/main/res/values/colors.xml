@@ -9,7 +9,9 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray">#CACACA</color>
     <color name="colorDarkGray">#4F4F4F</color>
+    <color name="colorLightGray">#E3E3E3</color>
     <color name="colorText">#434343</color>
+    <color name="colorBackground">#f9f4ff</color>
 
      <!-- Screens background color-->
         <color name="bg_screen1">#f64c73</color>

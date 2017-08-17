@@ -2,9 +2,7 @@ package com.gaukhar.dauzhan.bookapp.data;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by Admin on 14.07.2017.
- */
+
 
 public class MyBookListContract {
 

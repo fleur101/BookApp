@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory
-        android:title="@string/pref_lan_title"
-        >
 
-
-    <ListPreference
-        android:key="lan"
-        android:defaultValue="rus"
-        android:title="@string/pref_choose_book_lan"
-        android:entries="@array/language"
-        android:entryValues="@array/languageAlias"
-        />
-
-    </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_font_size_title"
         >

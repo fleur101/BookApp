@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "362134955527",
+    "firebase_url": "https://eureka-a11af.firebaseio.com",
+    "project_id": "eureka-a11af",
+    "storage_bucket": "eureka-a11af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362134955527:android:9b466899fbfd353a",
+        "android_client_info": {
+          "package_name": "com.gaukhar.dauzhan.bookapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362134955527-5ovk5dc2j4odilf7als3egflt67r76aq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gaukhar.dauzhan.bookapp",
+            "certificate_hash": "8e3631f428e9e7cd05ce5b9f6002a83f499f3a58"
+          }
+        },
+        {
+          "client_id": "362134955527-9g6rsbb7rfqq4h4dtfhubudp9tur51fe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCu0a5_oLO2SZDduBMlIxyZKv56qvXd_KM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "362134955527-9g6rsbb7rfqq4h4dtfhubudp9tur51fe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

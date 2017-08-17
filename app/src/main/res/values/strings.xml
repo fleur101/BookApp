@@ -9,17 +9,16 @@
 
     <string name="add_list">Добавить в список</string>
     <string name="cancel">Отмена</string>
+    <string name="skip">Пропустить</string>
     <string name="what_book">Что это за книга?</string>
     <string name="drawer_open">drawer open</string>
     <string name="drawer_close">drawer closed</string>
     <string name="my_list">Мои книги</string>
     <string name="profile_name">Эврика!</string>
-    <string name="cancel_btn">Отмена</string>
+    <string name="cancel_btn">Назад</string>
     <string name="bookcoaster">Отрывки</string>
 
     <string name="settings">Настройки</string>
-    <string name="lan_rus">rus</string>
-    <string name="lan_kaz">kaz</string>
     <string name="excerpt">Отрывок №</string>
     <string name="contact_developer">Написать разработчику</string>
     <string name="about_app">О приложении</string>
@@ -28,27 +27,15 @@
     <string name="pref_font_size_title">Шрифт</string>
     <string name="pref_choose_font_size">Выбрать размер шрифта</string>
     <string name="pref_choose_book_lan">Выбрать язык книг</string>
-    <string name="tv_no_books">Вы пока не добавили в список ни одну книгу</string>
-    <string name="prev">prev</string>
-    <string name="next">next</string>
+    <string name="tv_no_books">Ваша полка пуста. Чтобы добавить книгу, нажмите </string>
+    <string name="tab_here">сюда</string>
+    <string name="next">Хочу еще!</string>
+    <string name="start">Ок</string>
+    <string name="nextBook">Хочу еще!</string>
     <string name="delete">Удалить</string>
 
-     <string name="title_activity_welcome">Home Screen</string>
-    <string name="skip">SKIP</string>
-    <string name="start">GOT IT</string>
- 
-    <string name="slide_1_title">Hello Food!</string>
-    <string name="slide_1_desc">The easiest way to order food from your favourite restaurant!</string>
- 
-    <string name="slide_2_title">Movie Tickets</string>
-    <string name="slide_2_desc">Book movie tickets for your family and friends!</string>
- 
-    <string name="slide_3_title">Great Discounts</string>
-    <string name="slide_3_desc">Best discounts on every single service we offer!</string>
- 
-    <string name="slide_4_title">World Travel</string>
-    <string name="slide_4_desc">Book tickets of any transportation and travel the world!</string>
- 
-    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
-    <string name="play_again">Play Again</string>
+     
+    <string name="title_activity_welcome">Home Screen</string>
+    <string name="iv_read_more">Открыть полностью</string>
+      
 </resources>
