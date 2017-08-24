@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+    <ProgressBar
+        android:id="@+id/pb_loading_indicator"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="200dp"
+
+        />
+<LinearLayout
+    android:id="@+id/ll_fragment_quiz"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="20"
+    android:visibility="gone"
+    >
+
+        <TextView
+            android:id="@+id/tv_question_num"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            tools:text="1/5"
+            android:layout_weight="2"/>
+        <TextView
+            android:id="@+id/tv_quiz_question"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textColor="@color/colorText"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:layout_weight="8"
+            tools:text='"Парадокс чтения: оно уводит нас от реальности, чтобы наполнить реальность смыслом.Парадокс чтения: оно уводит нас от реальности, чтобы наполнить реальность смыслом."'/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="10"
+        android:gravity="center"
+        >
+
+        <Button
+            android:id="@+id/btn_quiz_answer_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_quiz_answer_2"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorLightBlue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            tools:text="Человек, который смеется"
+            android:textColor="@color/colorText"
+            />
+
+        <Button
+            android:id="@+id/btn_quiz_answer_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_quiz_answer_3"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorLightBlue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textColor="@color/colorText"
+            tools:text="Вино из одуванчиков"
+
+            />
+
+        <Button
+            android:id="@+id/btn_quiz_answer_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorLightBlue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            tools:text="Как роман"
+            android:textColor="@color/colorText"
+
+            />
+
+        <Button
+            android:id="@+id/btn_quiz_answer_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_quiz_answer_3"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorLightBlue"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            tools:text="Над пропастью во ржи"
+            android:textColor="@color/colorText"
+
+            />
+
+
+    </RelativeLayout>
+</LinearLayout>
+</FrameLayout>

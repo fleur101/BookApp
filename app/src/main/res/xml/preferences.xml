@@ -3,14 +3,23 @@
 
     <PreferenceCategory
         android:title="@string/pref_font_size_title"
-        >
 
+        >
+        <ListPreference
+            android:key="font"
+            android:defaultValue="font_helvetica"
+            android:title="Выбрать шрифт"
+            android:entries="@array/fonts"
+            android:entryValues="@array/font_values"
+            android:layout="@layout/my_settings_layout"
+            />
         <ListPreference
             android:key="font_size"
             android:defaultValue="18"
             android:title="@string/pref_choose_font_size"
             android:entries="@array/font_sizes"
             android:entryValues="@array/font_size_keys"
+            android:layout="@layout/my_settings_layout"
             />
 
     </PreferenceCategory>

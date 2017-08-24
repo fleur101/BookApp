@@ -5,11 +5,15 @@
             android:id="@+id/bookcoaster"
             android:icon="@drawable/book_open_page_variant"
             android:title="@string/bookcoaster"
-            android:checked="true"/>
+           />
+        <item
+            android:id="@+id/quiz"
+            android:icon="@drawable/help_circle"
+            android:title="@string/quiz"/>
         <item
             android:id="@+id/my_books"
             android:icon="@drawable/star"
-            android:title="@string/my_list"/>
+            android:title="@string/favorite"/>
         <item
             android:id="@+id/settings"
             android:icon="@drawable/settings"
@@ -19,5 +23,6 @@
             android:id="@+id/about_app"
             android:icon="@drawable/information_outline"
             android:title="@string/about_app"/>
+
     </group>
 </menu>

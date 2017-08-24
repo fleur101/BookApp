@@ -18,8 +18,8 @@ public class AboutAppActivity extends DrawerActivity {
         TextView mAppNameTextView = (TextView) findViewById(R.id.tv_app_name);
         TextView mAppAuthorTextVew = (TextView) findViewById(R.id.app_author_name);
         mAppNameTextView.setText("Эврика!");
-        mAboutAppIntroTextView.setText("Эврика - приложение, которое поможет Вам выбрать, что почитать и пройти тест на знание известных художественных произведений \n");
-        mAboutAppTextView.setText("Вы читаете случайно выпавший отрывок, не зная ни названия произведения, ни его автора, и основываете свой выбор только на прочитанном фрагменте. \n\n");
+        mAboutAppIntroTextView.setText("Эврика - приложение, которое поможет Вам выбрать интересную книгу для чтения.\n");
+        mAboutAppTextView.setText("Вы читаете случайно выпавший отрывок, не зная ни названия произведения, ни его автора, и основываете свой выбор только на прочитанном фрагменте. \nНашли нужну книгу и не знаете, чем себя занять? Пройдите тест на знание цитат из известных художественных произведений!\n\n");
         mAboutAppNoteTextView.setText("Внимание! Это приложение не является электронной библиотекой и предназначено только для того, чтобы помочь Вам найти то, что Вы давно искали :)");
         mAppAuthorTextVew.setText("Gaukhar Dauzhan\ngaukhard96@gmail.com");
 

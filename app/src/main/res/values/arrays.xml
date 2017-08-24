@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="language" >
-        <item>Русский</item>
-        <item>Қазақша</item>
+    <string-array name="fonts" >
+        <item>Roboto</item>
+        <item>Helvetica</item>
+        <item>Kurale</item>
+
     </string-array>
-    <string-array name="languageAlias">
-        <item>rus</item>
-        <item>kaz</item>
+    <string-array name="font_values">
+        <item>font_roboto</item>
+        <item>font_helvetica</item>
+        <item>font_kurale</item>
+
     </string-array>
     <string-array name="font_sizes">
         <item>Мелкий</item>

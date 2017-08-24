@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gaukhar.dauzhan.bookapp.data.MyBookListContract;
@@ -22,9 +22,9 @@ public class MyListActivity extends DrawerActivity {
     private BooksAdapter mAdapter;
     private TextView mNoBooksTextView;
     private TextView mSearchBooksTextView;
+    private LinearLayout mNoBooksLinearLayout;
     private long id;
     private int numMyBooks;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,10 @@ public class MyListActivity extends DrawerActivity {
         getLayoutInflater().inflate(R.layout.activity_my_list_view, mContentFrame);
         setTitle(R.string.my_list);
         RecyclerView mListRecyclerView = (RecyclerView) findViewById(R.id.rv_books_list);
-
         mListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         MyBookListDbHelper dbHelper =  new MyBookListDbHelper(this);
         mDb = dbHelper.getReadableDatabase();
+        mNoBooksLinearLayout = (LinearLayout) findViewById(R.id.ll_no_books);
         mNoBooksTextView = (TextView) findViewById(R.id.tv_no_books_yet);
         mSearchBooksTextView = (TextView) findViewById(R.id.tv_search_books);
         Cursor cursor = getBooksInMyList();
@@ -45,8 +45,7 @@ public class MyListActivity extends DrawerActivity {
         mSearchBooksTextView.setText(R.string.tab_here);
 
         if (cursor.getCount() == 0) {
-            mNoBooksTextView.setVisibility(View.VISIBLE);
-            mSearchBooksTextView.setVisibility(View.VISIBLE);
+            mNoBooksLinearLayout.setVisibility(View.VISIBLE);
             mSearchBooksTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -60,48 +59,30 @@ public class MyListActivity extends DrawerActivity {
         registerForContextMenu(mListRecyclerView);
 
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                long id = (long)viewHolder.itemView.getTag();
-                removeBook(id);
-                mAdapter.swapCursor(getBooksInMyList());
-                numMyBooks--;
-                if (numMyBooks==0){
-                    mNoBooksTextView.setVisibility(View.VISIBLE);
-                    mSearchBooksTextView.setVisibility(View.VISIBLE);
-                    mSearchBooksTextView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(v.getContext(), ReadActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-                }
-            }
-
-
-        }).attachToRecyclerView(mListRecyclerView);
-
-
     }
 
 
 
-    //    public Cursor getBooksInMyList(){
-//        return getContentResolver().query(BookListContract.CONTENT_URI,
-//                null,
-//                BookListContract.COLUMN_IN_MY_LIST+" =?",
-//                new String[]{"1"},
-//                null);
-//    }
 
+
+
+    public void deleteBook(RecyclerView.ViewHolder holder) {
+        long id = (long)holder.itemView.getTag();
+        removeBook(id);
+        mAdapter.swapCursor(getBooksInMyList());
+        numMyBooks--;
+        if (numMyBooks==0){
+            mNoBooksTextView.setVisibility(View.VISIBLE);
+            mSearchBooksTextView.setVisibility(View.VISIBLE);
+            mSearchBooksTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ReadActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
     public Cursor getBooksInMyList(){
         return mDb.query(
                 MyBookListContract.MyBookListItem.TABLE_NAME,
@@ -116,27 +97,10 @@ public class MyListActivity extends DrawerActivity {
 
 
 
-//    private void addNewBook(String bookName, String authorName){
-//        ContentValues cv = new ContentValues();
-//        cv.put(MyBookListContract.MyBookListItem.MY_BOOK_NAME, bookName);
-//        cv.put(MyBookListContract.MyBookListItem.MY_BOOK_AUTHOR, authorName);
-//      //  Uri uri = getContentResolver().insert(BookListContract.CONTENT_URI, cv);
-////        if (uri!=null){
-////            Toast.makeText(getBaseContext(), uri.toString(), Toast.LENGTH_SHORT).show();
-////        }
-//    //    finish();
-//       // return mDb.insert(MyBookListContract.CustomBookListItem.TABLE_NAME, null, cv);
-//    }
 
     public  boolean removeBook(long id){
         return mDb.delete(MyBookListContract.MyBookListItem.TABLE_NAME, MyBookListContract.MyBookListItem._ID + " = " + id, null)>0;
     }
 
 
-//    @Override
-//    public boolean onItemLongClicked(long id) {
-//        removeBook(id);
-//        mAdapter.swapCursor(getBooksInMyList());
-//        return true;
-//    }
 }

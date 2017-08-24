@@ -2,29 +2,72 @@
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorLightGray"
 
     >
-    <LinearLayout
+    <RelativeLayout
+            android:id="@+id/ll_read_load"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_transition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:visibility="invisible"
-            android:textSize="18sp"
-            android:layout_marginBottom="20dp"/>
+            android:visibility="gone"
+            android:background="@color/colorWhite"
+            android:gravity="center_horizontal"
+
+        >
+        <!--<TextView-->
+            <!--android:id="@+id/tv_transition"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="18sp"-->
+            <!--android:layout_margin="20dp"-->
+             <!--/>-->
+
         <ProgressBar
             android:id="@+id/pb_loading_indicator"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"/>
-    </LinearLayout>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="200dp"
+            />
+
+        <!--<pl.droidsonroids.gif.GifTextView-->
+            <!--android:id="@+id/gif_loader1"-->
+            <!--android:layout_width="35dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="@drawable/bookgif"-->
+            <!--android:layout_marginTop="200dp"-->
+            <!--android:alpha="0.8"-->
+
+            <!--/>-->
+        <!--<pl.droidsonroids.gif.GifTextView-->
+            <!--android:id="@+id/gif_loader2"-->
+            <!--android:layout_width="35dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="@drawable/bookgif"-->
+            <!--android:layout_toEndOf="@+id/gif_loader1"-->
+            <!--android:layout_toRightOf="@+id/gif_loader1"-->
+            <!--android:layout_marginTop="200dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:alpha="0.8"-->
+
+            <!--/>-->
+
+        <!--<pl.droidsonroids.gif.GifTextView-->
+            <!--android:id="@+id/gif_loader3"-->
+            <!--android:layout_width="35dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:background="@drawable/bookgif"-->
+            <!--android:layout_toEndOf="@+id/gif_loader2"-->
+            <!--android:layout_toRightOf="@+id/gif_loader2"-->
+            <!--android:layout_marginTop="200dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:alpha="0.8"-->
+            <!--/>-->
+    </RelativeLayout>
 
 
     <ScrollView
@@ -33,6 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:animateLayoutChanges="true"
+        android:visibility="gone"
         >
         <LinearLayout
             android:id="@+id/layout_scroller"
@@ -51,18 +95,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 card_view:cardCornerRadius="4dp"
-                android:visibility="gone"
                 android:animateLayoutChanges="true">
 
                 <TextView
                     android:id="@+id/tv_book_contents"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingEnd="15dp"
                     android:paddingBottom="0dp"
                     android:textColor="@color/colorText"
                     android:textSize="18sp"
                     android:drawableBottom="@drawable/arrow_small"
+                    android:drawablePadding="10dp"
                     />
                 <ImageView
                     android:id="@+id/iv_read_more"
@@ -70,7 +118,7 @@
                     android:layout_height="10dp"
                     android:contentDescription="@string/iv_read_more"
                     android:layout_centerInParent="true"
-                    android:visibility="gone"/>
+                    />
 
 
 
@@ -89,7 +137,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="30dp"
                     android:layout_marginStart="30dp"
-                    android:visibility="invisible"
                     android:textColor="@color/colorWhite"
                     android:text="@string/what_book"
                     android:background="@color/colorAccent"
@@ -98,13 +145,12 @@
 
                 <Button
                     android:id="@+id/btn_next"
-                    android:layout_width="100dp"
+                    android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="30dp"
                     android:layout_marginEnd="30dp"
-                    android:visibility="invisible"
                     android:text="@string/nextBook"
                     android:textColor="@color/colorWhite"
                     android:background="@color/colorAccent"

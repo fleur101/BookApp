@@ -1,6 +1,7 @@
 package com.gaukhar.dauzhan.bookapp;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,7 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
-public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class DrawerActivity extends AppCompatActivity  {
 
     private static final String TAG ="DRAWER_ACTIVITY_TAG";
 
@@ -27,6 +28,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     public DrawerLayout mDrawerLayout;
     public NavigationView mNavigationView;
     public ActionBarDrawerToggle mDrawerToggle;
+    public static Typeface font_helvetica;
+    public static Typeface font_kurale;
+    public static Typeface font_ringbear;
+    public static Typeface font_roboto;
+
     boolean doubleBackToExitPressedOnce = false;
 
 
@@ -36,6 +42,10 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        font_helvetica =  Typeface.createFromAsset(getAssets(), "fonts/helvetica.ttf");
+        font_kurale = Typeface.createFromAsset(getAssets(), "fonts/kurale.ttf");
+      //  font_ringbear = Typeface.createFromAsset(getAssets(), "fonts/ringbear.ttf");
+        font_roboto = Typeface.DEFAULT;
         setSupportActionBar(toolbar);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -44,6 +54,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
             public void onDrawerOpened(View drawerView) {
+
                 super.onDrawerOpened(drawerView);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
@@ -51,21 +62,70 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                                                              @Override
+                                                              public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Log.e(TAG, "onNavigationItemSelected: "+item.setChecked(true));
+                int id = item.getItemId();
+                Intent intent = null;
+                switch(id){
+                case R.id.bookcoaster:
+                  Log.e(TAG, "selectItem: excerpts");
+                  intent = new Intent(getApplicationContext(), ReadActivity.class);
+                  break;
+                case  R.id.quiz:
+                    Log.e(TAG, "selectItem: mylist");
+                    intent = new Intent(getApplicationContext(), QuizActivity.class);
+                    break;
+                case  R.id.my_books:
+                  Log.e(TAG, "selectItem: mylist");
+                  intent = new Intent(getApplicationContext(), MyListActivity.class);
+                  break;
+                case R.id.settings:
+                  Log.e(TAG, "selectItem: settings");
+                  intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                  break;
+                case R.id.about_app:
+                  Log.e(TAG, "selectItem: about app");
+                  intent = new Intent(getApplicationContext(), AboutAppActivity.class);
+                  break;
+                default:
+                  Log.e(TAG, "selectItem: other???");
+                  return false;
+                }
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+                startActivity(intent);
+                return true;
+                }
+                });
+
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //          mDrawerLayout.setStatusBarBackgroundColor(getColor(R.color.colorPrimary));
 //
 //        }
-          mContentFrame = (FrameLayout) findViewById(R.id.content_frame);
-
-
-
+        setNavigationViewCheckedItem();
+        mContentFrame = (FrameLayout) findViewById(R.id.content_frame);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
 
         if (getSupportActionBar()!=null)getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (getSupportActionBar()!=null)getSupportActionBar().setHomeButtonEnabled(true);
 
         }
+
+    private void setNavigationViewCheckedItem() {
+
+        if (this.getClass().equals(ReadActivity.class)){
+            mNavigationView.setCheckedItem(R.id.bookcoaster);
+        } else if (this.getClass().equals(MyListActivity.class)){
+            mNavigationView.setCheckedItem(R.id.my_books);
+        }if (this.getClass().equals(SettingsActivity.class)){
+            mNavigationView.setCheckedItem(R.id.settings);
+        }if (this.getClass().equals(AboutAppActivity.class)){
+            mNavigationView.setCheckedItem(R.id.about_app);
+        }
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -114,36 +174,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         // Handle your other action bar items...
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        item.setChecked(true);
-        int id = item.getItemId();
-        Intent intent = null;
-        if (id == R.id.bookcoaster) {
-            // Call your Action
-            Log.e(TAG, "selectItem: excerpts");
-            intent = new Intent(this, ReadActivity.class);
-        } else if (id == R.id.my_books) {
-            // Call your Action
-            Log.e(TAG, "selectItem: mylist");
-            intent = new Intent(this, MyListActivity.class);
-        } else if (id == R.id.settings) {
-            // Call your Action
-            Log.e(TAG, "selectItem: settings");
-            intent = new Intent(this, SettingsActivity.class);
-        } else if (id == R.id.about_app){
-            Log.e(TAG, "selectItem: about app");
-            intent = new Intent(this, AboutAppActivity.class);
-        } else {
-            Log.e(TAG, "selectItem: other");
-            intent = new Intent(this, ReadActivity.class);
-        }
-        startActivity(intent);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
 
-    }
 
 
 

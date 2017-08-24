@@ -12,8 +12,8 @@ import com.gaukhar.dauzhan.bookapp.Fragments.ReadFragment;
 import com.gaukhar.dauzhan.bookapp.Fragments.WhatBookDialogFragment;
 import com.gaukhar.dauzhan.bookapp.data.MyBookListContract;
 import com.gaukhar.dauzhan.bookapp.data.MyBookListDbHelper;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -22,10 +22,14 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
     private static final String TAG = "READ_ACTIVITY_TAG";
     private int tvFontSize;
     private String stringFontSize;
+    private String font;
     private int positionVis;
     private SQLiteDatabase mDb;
+    private ArrayList<Integer> usedQuestionIdList;
+    private int randomId;
 
-//    private ImageButton leftNav;
+
+    //    private ImageButton leftNav;
 //    private ImageButton rightNav;
     SharedPreferences.OnSharedPreferenceChangeListener mListener;
 
@@ -34,21 +38,27 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_read, mContentFrame);
         setTitle(getString(R.string.bookcoaster));
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
+    //    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        usedQuestionIdList = new ArrayList<>();
+        usedQuestionIdList.add(7);
         //my list db
         MyBookListDbHelper mDbHelper = new MyBookListDbHelper(this);
         mDb = mDbHelper.getWritableDatabase();
+
+
         setupSharedPreferences();
         Log.e(TAG, "onCreate: created");
         setListener();
         if(savedInstanceState == null) {
             //put args
             Random rand = new Random();
-            int randomId = rand.nextInt(96);
+          //  int randomId = rand.nextInt(96);
+            randomId = QuizActivity.generateRandom(0, 95, usedQuestionIdList);
+            usedQuestionIdList.add(randomId);
             Bundle args = new Bundle();
             args.putInt(ReadFragment.ARG_ITEM_ID, randomId);
             args.putInt("fontSize", tvFontSize);
+            args.putString("font", font);
             //create fragment
             ReadFragment fragment = new ReadFragment();
             fragment.setArguments(args);
@@ -63,10 +73,14 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
     public void replaceFragment(){
         //add args
         Random rand = new Random();
-        int randomId= rand.nextInt(96);
+       // int randomId= rand.nextInt(96);
+        randomId = QuizActivity.generateRandom(0, 95, usedQuestionIdList);
+        usedQuestionIdList.add(randomId);
         Bundle args = new Bundle();
         args.putInt(ReadFragment.ARG_ITEM_ID, randomId);
         args.putInt("fontSize", tvFontSize);
+        args.putString("font", font);
+
         //replace fragment
         ReadFragment fragment = new ReadFragment();
         fragment.setArguments(args);
@@ -82,9 +96,12 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             stringFontSize = sharedPreferences.getString("font_size", "18");
             tvFontSize=Integer.valueOf(stringFontSize);
+            font = sharedPreferences.getString("font", "font_helvetica");
+
             Log.e(TAG, "onCreate: tv font size" + tvFontSize);
+            Log.e(TAG, "onCreate: tv font" + font);
         } catch (Exception ex) {
-            Log.e(TAG, "onCreate: tv font size exception");
+            Log.e(TAG, "onCreate: tv font exception");
             ex.printStackTrace();
         }
     }
@@ -108,6 +125,17 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
                             stringFontSize = sharedPreferences.getString(key, "18");
                             tvFontSize=Integer.valueOf(stringFontSize);
                             Log.e(TAG, "onSharedPreferenceChanged: fontSizePref" + tvFontSize);
+                            break;
+                        } catch (Exception ex) {
+                            Log.e(TAG, "onSharedPreferenceChanged: font_size_pref exception");
+                            ex.printStackTrace();
+                        }
+                        break;
+                    case "font":
+                        Log.e(TAG, "onSharedPreferenceChanged: key is font");
+                        try {
+                            font = sharedPreferences.getString(key, "font_helvetica");
+                            Log.e(TAG, "onSharedPreferenceChanged: fontPref" + font);
                             break;
                         } catch (Exception ex) {
                             Log.e(TAG, "onSharedPreferenceChanged: font_size_pref exception");
@@ -162,8 +190,8 @@ public class ReadActivity extends DrawerActivity  implements WhatBookDialogFragm
 
     }
 
-    public void btnClickWhatBook(int id, String book, String author) {
-        String args[] = {Integer.toString(id), book, author};
+    public void btnClickWhatBook(int id, String book, String author, String fontType) {
+        String args[] = {Integer.toString(id), book, author, fontType};
         Bundle bundle = new Bundle();
         bundle.putStringArray("book details", args);
         WhatBookDialogFragment dialogFragment = new WhatBookDialogFragment();

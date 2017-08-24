@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    >
+
+
+    <TextView
+        android:id="@+id/tv_dialog_empty"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimaryLight"
+        android:text="@string/your_result_dialog"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/dialog_quiz_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorText"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        />
+
+
+
+
+
+    <!--<Button-->
+    <!--android:id="@+id/customDialogCancel"-->
+    <!--android:layout_width="60dp"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:textColor="@color/colorDarkGray"-->
+    <!--android:text="@string/cancel_btn"-->
+    <!--android:textSize="12sp"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginStart="20dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:layout_below="@+id/dialog_book_author"/>-->
+
+
+    <!--<Button-->
+    <!--android:id="@+id/customDialogAdd"-->
+    <!--android:layout_width="180dp"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:layout_toEndOf="@+id/customDialogCancel"-->
+    <!--android:layout_toRightOf="@+id/customDialogCancel"-->
+    <!--android:textColor="@color/colorAccent"-->
+    <!--android:text="@string/add_list"-->
+    <!--android:textSize="12sp"-->
+    <!--android:layout_marginLeft="10dp"-->
+
+    <!--android:background="@android:color/transparent"-->
+    <!--android:layout_below="@id/dialog_book_author"/>-->
+
+
+
+
+</LinearLayout>
